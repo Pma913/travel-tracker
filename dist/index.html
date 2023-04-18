@@ -4,13 +4,25 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Webpack Starter Kit</title>
+  <title>Travel Tracker</title>
 </head>
 <body>
-  <img src="./images/turing-logo.png" alt="turing logo">
-  
-  <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->
+  <header id="header">
+    <h1 id="appName">Travel Tracker</h1>
+    <h2 id="welcomeUser">Welcome:<span id="username">User</span></h2>
+  </header>
+  <main id="main">
+    <section id="pastTripsSection">
+      <h3 id="pastTrips">Past Trips</h3>
+      <div id="pastTripsBox" class="past-trips-box"></div>
+      <!-- Add content here for past trips -->
+    </section>
+    <section id="pendingTripsSection">
+      <h3 id="pendingTrips">Pending Trips</h3>
+      <div id="pendingTripsBox" class="pending-trips-box"></div>
+      <!-- Add content here for pending trips -->
+    </section>
+  </main>
   <script src="bundle.js"></script>
-
 </body>
 </html>
