@@ -29,9 +29,9 @@
       </section>
     </div>
     <section id="newTripFormContainer" class="form-container">
-      <form>
+      <form class="trip-form">
+        <h2>Time to book a trip!</h2>
         <section class="input-box">
-          <h2>Time to book a trip!</h2>
           <label for="date">Date:</label>
           <input class="data-input" type="date" id="date" name="date">
         </section>
@@ -44,12 +44,12 @@
           <input class="data-input" type="number" id="numberOfTravelers" name="number-of-travelers">
         </section>
         <section class="input-box">
-          <label for="numSteps">Destination:</label>
-          <input class="data-input" type="number" id="numSteps" name="num-steps">
+          <label for="destination">Destination:</label>
+          <input class="data-input" type="search" id="destination" name="destination">
 
         </section>
         <p class="error-message" id="errorMessage"></p>
-        <input type="submit" id="userInputBtn" class="user-input button" value="Enter User Data">
+        <input type="submit" id="userInputBtn" class="user-input button" value="book trip">
       </form>
     </section>
   </main>
