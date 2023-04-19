@@ -12,19 +12,45 @@
     <h2 id="welcomeUser">Welcome:<span id="username">User</span></h2>
   </header>
   <main id="main">
-    <section id="pastTripsSection" class="past-trips-section">
-      <h3 id="pastTrips">Past Trips</h3>
-      <div id="pastTripsBox" class="past-trips-box"></div>
-      <!-- Add content here for past trips -->
-    </section>
-    <section id="pendingTripsSection" class="pending-trips-section">
-      <h3 id="pendingTrips">Pending Trips</h3>
-      <div id="pendingTripsBox" class="pending-trips-box"></div>
-      <!-- Add content here for pending trips -->
-    </section>
-    <section id="cost" class="cost">
-      <h3 id="costTitle">Total Cost</h3>
-      <h4 id="displayPrice"></h4>
+    <div id="dataDisplay" class="data-display">
+      <section id="pastTripsSection" class="past-trips-section">
+        <h3 id="pastTrips">Past Trips</h3>
+        <div id="pastTripsBox" class="past-trips-box"></div>
+        <!-- Add content here for past trips -->
+      </section>
+      <section id="pendingTripsSection" class="pending-trips-section">
+        <h3 id="pendingTrips">Pending Trips</h3>
+        <div id="pendingTripsBox" class="pending-trips-box"></div>
+        <!-- Add content here for pending trips -->
+      </section>
+      <section id="cost" class="cost">
+        <h3 id="costTitle">Total Cost</h3>
+        <h4 id="displayPrice"></h4>
+      </section>
+    </div>
+    <section id="newTripFormContainer" class="form-container">
+      <form>
+        <section class="input-box">
+          <h2>Time to book a trip!</h2>
+          <label for="date">Date:</label>
+          <input class="data-input" type="date" id="date" name="date">
+        </section>
+        <section class="input-box">
+          <label for="numberOfDays">Number of days:</label>
+          <input class="data-input" type="number" id="numberOfDays" name="number-of-days">
+        </section>
+        <section class="input-box"> 
+          <label for="numberOfTravelers">Number of travelers:</label>
+          <input class="data-input" type="number" id="numberOfTravelers" name="number-of-travelers">
+        </section>
+        <section class="input-box">
+          <label for="numSteps">Destination:</label>
+          <input class="data-input" type="number" id="numSteps" name="num-steps">
+
+        </section>
+        <p class="error-message" id="errorMessage"></p>
+        <input type="submit" id="userInputBtn" class="user-input button" value="Enter User Data">
+      </form>
     </section>
   </main>
   <script src="bundle.js"></script>
