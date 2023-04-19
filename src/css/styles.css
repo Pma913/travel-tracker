@@ -20,8 +20,11 @@ main {
 }
 
 .past-trips-section,
-.pending-trips-section {
+.pending-trips-section,
+.cost {
   display: flex;
   justify-content: center;
-  width: 50%;
+  width: 33.33%;
+  flex-direction: column;
+  align-items: center;
 }
