@@ -2,7 +2,7 @@ export default { trips: [
   {
   id:1, 
   userID: 1, 
-  destinationID: 49,
+  destinationID: 1,
   travelers: 1,
   date: "2022/09/16",
   duration: 8,
@@ -12,7 +12,7 @@ export default { trips: [
   {
   id: 2,
   userID: 2,
-  destinationID: 25,
+  destinationID: 2,
   travelers: 5,
   date: "2022/10/04",
   duration: 18,
@@ -22,7 +22,7 @@ export default { trips: [
   {
   id: 3,
   userID: 1,
-  destinationID: 22,
+  destinationID: 3,
   travelers: 4,
   date: "2022/05/22",
   duration: 17,
@@ -32,9 +32,9 @@ export default { trips: [
   {
   id: 4,
   userID: 2,
-  destinationID: 14,
+  destinationID: 4,
   travelers: 2,
-  date: "2022/02/25",
+  date: "2021/02/25",
   duration: 10,
   status: "approved",
   suggestedActivities: []
@@ -42,7 +42,7 @@ export default { trips: [
   {
   id: 5,
   userID: 1,
-  destinationID: 29,
+  destinationID: 5,
   travelers: 3,
   date: "2022/04/30",
   duration: 18,
@@ -52,9 +52,9 @@ export default { trips: [
   {
   id: 6,
   userID: 2,
-  destinationID: 35,
+  destinationID: 6,
   travelers: 3,
-  date: "2022/06/29",
+  date: "2023/06/29",
   duration: 9,
   status: "approved",
   suggestedActivities: []
