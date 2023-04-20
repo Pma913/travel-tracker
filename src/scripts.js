@@ -18,7 +18,12 @@ const pastTrips = document.getElementById("pastTripsBox"),
       destinationInput = document.getElementById("destination"),
       bookButton = document.getElementById("userInputBtn"),
       tripPrice = document.getElementById("newTripPrice"),
-      inputs = document.querySelectorAll(".data-input");
+      inputs = document.querySelectorAll(".data-input"),
+      loginBtn = document.getElementById("loginBtn"),
+      username = document.getElementById("username"),
+      password = document.getElementById("password"),
+      loginPage = document.getElementById("loginBody"),
+      mainPage = document.getElementById("mainPage");
 
 /* Global Variables */
 let user,
@@ -137,7 +142,7 @@ window.addEventListener('load', () => {
   })
 });
 
-bookButton.addEventListener('click', function(event) {
+bookButton.addEventListener('click', (event) => {
   event.preventDefault();
   addData();
 });
@@ -149,3 +154,13 @@ inputs.forEach(input => {
     }
   });
 });
+
+loginBtn.addEventListener('click', (event) => {
+  event.preventDefault();
+  console.log('thats cool')
+  if (username.value && password.value === "travel") {
+  console.log('even cooler')
+    loginPage.classList.add('hidden');
+    mainPage.classList.remove('hidden');
+  }
+})
