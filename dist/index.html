@@ -52,14 +52,14 @@
   </section>
   <section id="newTripFormContainer" class="form-container hidden">
     <section id="formInputField" class="form-input-field hidden">
-      <form class="trip-form">
-        <section class="input-box">
-          <label for="date">Date:</label>
-          <input class="data-input" type="date" id="date" name="date">
-        </section>
+      <form class="trip-form" id="tripForm">
         <section class="input-box">
           <label for="destination">Destination:</label>
           <input class="data-input" type="text" id="destination" name="destination" value="Somewhere in time">
+        </section>
+        <section class="input-box">
+          <label for="date">Date:</label>
+          <input class="data-input" type="date" id="date" name="date">
         </section>
         <section class="input-box">
           <label for="numberOfDays">Number of days:</label>
@@ -74,7 +74,7 @@
         <input type="submit" id="userInputBtn" class="user-input button" value="book trip">
       </form>
     </section>
-    <section class="destination-select">
+    <section class="destination-select" id="destSelect">
       <div class="image-section-heading">
         <h2>It's time for a vacation!</h2>
         <p class="description">Start by selecting a location</p>
