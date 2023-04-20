@@ -28,7 +28,8 @@ const pastTrips = document.getElementById("pastTripsBox"),
       destinationDisplay = document.getElementById("destinationDisplay"),
       showFormBtn = document.getElementById("bookTrip"),
       newTripForm = document.getElementById("newTripFormContainer"),
-      formInputs = document.getElementById("formInputField");
+      formInputs = document.getElementById("formInputField"),
+      destinationHeader = document.getElementById("destSelect");
 
 /* Global Variables */
 let user,
@@ -42,7 +43,7 @@ const displayDestinations = () => {
   destinations.forEach(dest => {
     destinationDisplay.innerHTML += `<div class="img-box">
     <img src=${dest.image} alt=${dest.alt} class="img">
-    <button class="select-destination" id="chooseDestination">${dest.destination}</button>
+    <button class="select-destination" id="chooseDestination" name="${dest.destination}">${dest.destination}</button>
     </div>`;
   })
 }
@@ -85,6 +86,21 @@ const clearDisplay = () => {
 }
 
 /* Data manipulators */
+const setEventListeners = () => {
+  const destButtons = document.querySelectorAll("#chooseDestination");
+  // console.log('theButtons work',destButtons)
+  destButtons.forEach(node => {
+    node.addEventListener('click', () => {
+      // console.log('You clicked on me')
+      // console.log('is this the name?', node.name)
+      destinationDisplay.classList.add('hidden');
+      formInputs.classList.remove('hidden');
+      destinationHeader.classList.add('hidden');
+      destinationInput.value = node.name;
+    })
+  })
+}
+
 const setUserData = () => {
   fetchAllData()
   .then(data => {
@@ -190,8 +206,11 @@ window.addEventListener('load', () => {
 bookButton.addEventListener('click', (event) => {
   event.preventDefault();
   addData();
-  newTripForm.classList.add('hidden');
+  formInputs.classList.add('hidden');
   mainPage.classList.remove('hidden');
+  newTripForm.classList.add('hidden');
+  destinationHeader.classList.remove('hidden');
+  destinationDisplay.classList.remove('hidden');
 });
 
 inputs.forEach(input => {
@@ -216,4 +235,5 @@ showFormBtn.addEventListener('click', () => {
   newTripForm.classList.remove('hidden');
   mainPage.classList.add('hidden');
   displayDestinations();
+  setEventListeners();
 })
