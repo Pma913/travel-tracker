@@ -75,6 +75,18 @@ header {
   object-fit: cover;
 }
 
+.image-section-heading {
+  display: flex;
+    height: 120px;
+    flex-direction: column;
+    justify-content: space-evenly;
+    margin-left: 10px;
+}
+
+.search-location {
+  width: 145px;
+}
+
 .hidden {
   display: none;
 }
