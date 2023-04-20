@@ -6,6 +6,7 @@ import User from './User';
 import { fetchAllData } from './apiCalls';
 import { postTrip } from './apiCalls';
 import { fetchTrips } from './apiCalls';
+import { fetchTravelers } from './apiCalls';
 
 /* Query Selectors */
 const pastTrips = document.getElementById("pastTripsBox"),
@@ -18,12 +19,19 @@ const pastTrips = document.getElementById("pastTripsBox"),
       destinationInput = document.getElementById("destination"),
       bookButton = document.getElementById("userInputBtn"),
       tripPrice = document.getElementById("newTripPrice"),
-      inputs = document.querySelectorAll(".data-input");
+      inputs = document.querySelectorAll(".data-input"),
+      loginBtn = document.getElementById("loginBtn"),
+      username = document.getElementById("username"),
+      password = document.getElementById("password"),
+      loginPage = document.getElementById("loginBody"),
+      mainPage = document.getElementById("mainPage");
 
 /* Global Variables */
 let user,
     tripId,
-    destinations; 
+    destinations,
+    travelers,
+    number; 
 
 /* DOM manipulation */
 const displayData = () => {
@@ -64,6 +72,42 @@ const clearDisplay = () => {
 }
 
 /* Data manipulators */
+const setUserData = () => {
+  fetchAllData()
+  .then(data => {
+    user = new User(travelers.find(trav => trav.id === number))
+    user.findTrips(data[0].trips)
+    user.addItineraries(data[1].destinations)
+    user.getUpcomingTrips();
+    user.getTotalCost("2021");
+    displayData();
+    tripId = data[0].trips.length + 1;
+    destinations = data[1].destinations;
+  })
+};
+
+const checkUsername = () => {
+  let login = username.value
+  let splitLogin = login.split('')
+  let letters = [];
+  let numbers = [];
+
+  splitLogin.forEach(item => {
+    if (Number.isInteger(parseInt(item))) {
+      numbers.push(item);
+    } else {
+      letters.push(item);
+    }
+  })
+
+  let word = letters.join('')
+  number = parseInt(numbers.join(''))
+  let travelerIds = travelers.map(trav => trav.id)
+  if (word === "traveler" && travelerIds.includes(number)) {
+    return true;
+  }
+}
+
 const getPrice = () => {
   let selectedDestination = destinations.find(dest => {
     return dest.destination === destinationInput.value;
@@ -124,20 +168,13 @@ const addData = () => {
 
 /* Event Listeners */
 window.addEventListener('load', () => {
-  fetchAllData()
+  fetchTravelers()
   .then(data => {
-    user = new User(data[0].travelers[0])
-    user.findTrips(data[1].trips)
-    user.addItineraries(data[2].destinations)
-    user.getUpcomingTrips();
-    user.getTotalCost("2021");
-    displayData();
-    tripId = data[1].trips.length + 1;
-    destinations = data[2].destinations;
+    travelers = data.travelers;
   })
 });
 
-bookButton.addEventListener('click', function(event) {
+bookButton.addEventListener('click', (event) => {
   event.preventDefault();
   addData();
 });
@@ -149,3 +186,14 @@ inputs.forEach(input => {
     }
   });
 });
+
+loginBtn.addEventListener('click', (event) => {
+  event.preventDefault();
+  
+  if (checkUsername() && password.value === "travel") {
+  
+    loginPage.classList.add('hidden');
+    mainPage.classList.remove('hidden');
+    setUserData();
+  }
+})

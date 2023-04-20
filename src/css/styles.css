@@ -49,3 +49,14 @@ header {
 .user-input {
   width: 30%;
 }
+
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.hidden {
+  display: none;
+}
