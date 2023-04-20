@@ -24,7 +24,10 @@ const pastTrips = document.getElementById("pastTripsBox"),
       username = document.getElementById("username"),
       password = document.getElementById("password"),
       loginPage = document.getElementById("loginBody"),
-      mainPage = document.getElementById("mainPage");
+      mainPage = document.getElementById("mainPage"),
+      destinationDisplay = document.getElementById("destinationDisplay"),
+      showFormBtn = document.getElementById("bookTrip"),
+      newTripForm = document.getElementById("newTripFormContainer");
 
 /* Global Variables */
 let user,
@@ -34,6 +37,14 @@ let user,
     number; 
 
 /* DOM manipulation */
+const displayDestinations = () => {
+  destinations.forEach(dest => {
+    destinationDisplay.innerHTML += `<div class="img-box">
+    <img src=${dest.image} alt=${dest.alt} class="img">
+    </div>`;
+  })
+}
+
 const displayData = () => {
   displayPast();
   displayUpcoming();
@@ -177,6 +188,8 @@ window.addEventListener('load', () => {
 bookButton.addEventListener('click', (event) => {
   event.preventDefault();
   addData();
+  newTripForm.classList.add('hidden');
+  mainPage.classList.remove('hidden');
 });
 
 inputs.forEach(input => {
@@ -191,9 +204,14 @@ loginBtn.addEventListener('click', (event) => {
   event.preventDefault();
   
   if (checkUsername() && password.value === "travel") {
-  
     loginPage.classList.add('hidden');
     mainPage.classList.remove('hidden');
     setUserData();
   }
+});
+
+showFormBtn.addEventListener('click', () => {
+  newTripForm.classList.remove('hidden');
+  mainPage.classList.add('hidden');
+  displayDestinations();
 })
