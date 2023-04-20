@@ -27,7 +27,8 @@ const pastTrips = document.getElementById("pastTripsBox"),
       mainPage = document.getElementById("mainPage"),
       destinationDisplay = document.getElementById("destinationDisplay"),
       showFormBtn = document.getElementById("bookTrip"),
-      newTripForm = document.getElementById("newTripFormContainer");
+      newTripForm = document.getElementById("newTripFormContainer"),
+      formInputs = document.getElementById("formInputField");
 
 /* Global Variables */
 let user,
