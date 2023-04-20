@@ -31,7 +31,7 @@ header {
 }
 
 .form-container {
-  width: 40%;
+  width: 100%;
 }
 
 .trip-form {
@@ -39,6 +39,7 @@ header {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  width: 40%;
 }
 
 .input-box {
@@ -55,6 +56,23 @@ header {
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+
+.destination-display {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-around;
+  justify-content: space-around;
+}
+
+.img-box {
+  width: 250px;
+}
+
+.img {
+  height: 250px;
+  width: 250px;
+  object-fit: cover;
 }
 
 .hidden {
