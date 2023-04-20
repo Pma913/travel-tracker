@@ -67,6 +67,7 @@ header {
 
 .img-box {
   width: 250px;
+  position: relative;
 }
 
 .img {
@@ -85,6 +86,12 @@ header {
 
 .search-location {
   width: 145px;
+}
+
+.select-destination {
+  position: absolute;
+  top: 220px;
+  left: 10px;
 }
 
 .hidden {
