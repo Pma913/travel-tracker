@@ -8,6 +8,7 @@
 
 html {
   height: 100vh;
+  background-color: rgba(60, 173, 120, 0.443);
 }
 
 header {
@@ -79,16 +80,25 @@ header {
   border-radius: 12px;
   height: 90%;
   width: 90%;
-  background-color: rgba(60, 173, 120, 0.443);
 }
 
 .btn {
   cursor: pointer;
+  color: black;
+  background-color: rgb(136 214 219);
+  height: 35px;
+  min-width: 90px;
+  border-radius: 5px;
+  transition: .3s
+}
+
+.btn:hover {
+  background-color:  rgb(85, 175, 182);
+  color: rgb(0, 0, 0);
 }
 
 .login-button {
-  border-radius: 5px;
-  width: 75px;
+  width: 90px;
 }
 
 .destination-display {
@@ -123,8 +133,15 @@ header {
 
 .select-destination {
   position: absolute;
-  top: 220px;
+  top: 210px;
   left: 10px;
+}
+
+
+.login-form,
+.destination-select,
+.main-page {
+  background-color: rgba(60, 173, 120, 0.443);
 }
 
 .date-error {
