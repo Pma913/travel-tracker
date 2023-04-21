@@ -66,8 +66,6 @@ const displayData = () => {
 
 const displayPast = () => {
   user.tripData.forEach(trip => {
-    console.log('trip dates',trip.date)
-    console.log(trip.date < todaysDate)
     if (trip.date < user.date) {
       pastTrips.innerHTML += `<h4>${trip.itinerary.destination}</h4>`;
     }
