@@ -53,7 +53,7 @@ const displayDestinations = () => {
   destinations.forEach(dest => {
     destinationDisplay.innerHTML += `<div class="img-box">
     <img src=${dest.image} alt=${dest.alt} class="img">
-    <button class="select-destination" id="chooseDestination" name="${dest.destination}">${dest.destination}</button>
+    <button class="select-destination btn" id="chooseDestination" name="${dest.destination}">${dest.destination}</button>
     </div>`;
   })
 }
