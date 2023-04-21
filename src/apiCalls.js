@@ -62,7 +62,6 @@ const postTrip = (data) => {
 const fetchTrips = () => {
   return fetch('http://localhost:3001/api/v1/trips')
   .then(res => {
-    console.log(res)
     if (!res.ok) {
       throw (res)
     }
