@@ -94,6 +94,10 @@ header {
   left: 10px;
 }
 
+.date-error {
+  color: red;
+}
+
 .hidden {
   display: none;
 }
