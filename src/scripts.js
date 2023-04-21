@@ -86,13 +86,18 @@ const clearDisplay = () => {
 }
 
 /* Data manipulators */
+const clearInputs = () => {
+  dateInput.value = "";
+  daysInput.value = "";
+  travelersInput.value = "";
+  destinationInput.value = "";
+}
+
 const setEventListeners = () => {
   const destButtons = document.querySelectorAll("#chooseDestination");
-  // console.log('theButtons work',destButtons)
+  
   destButtons.forEach(node => {
     node.addEventListener('click', () => {
-      // console.log('You clicked on me')
-      // console.log('is this the name?', node.name)
       destinationDisplay.classList.add('hidden');
       formInputs.classList.remove('hidden');
       destinationHeader.classList.add('hidden');
@@ -211,6 +216,7 @@ bookButton.addEventListener('click', (event) => {
   newTripForm.classList.add('hidden');
   destinationHeader.classList.remove('hidden');
   destinationDisplay.classList.remove('hidden');
+  clearInputs();
 });
 
 inputs.forEach(input => {
