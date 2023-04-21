@@ -66,7 +66,11 @@ const displayData = () => {
 
 const displayPast = () => {
   user.tripData.forEach(trip => {
-    pastTrips.innerHTML += `<h4>${trip.itinerary.destination}</h4>`;
+    console.log('trip dates',trip.date)
+    console.log(trip.date < todaysDate)
+    if (trip.date < user.date) {
+      pastTrips.innerHTML += `<h4>${trip.itinerary.destination}</h4>`;
+    }
   });
 }
 
@@ -123,6 +127,7 @@ const setUserData = () => {
     user.addItineraries(data[1].destinations)
     user.getUpcomingTrips();
     user.getTotalCost("2021");
+    user.getCurrentDate();
     displayData();
     displayName();
     tripId = data[0].trips.length + 1;
