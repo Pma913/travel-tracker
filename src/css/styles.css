@@ -31,7 +31,7 @@ header {
 }
 
 .form-container {
-  width: 40%;
+  width: 100%;
 }
 
 .trip-form {
@@ -39,6 +39,7 @@ header {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  width: 40%;
 }
 
 .input-box {
@@ -55,6 +56,46 @@ header {
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+
+.destination-display {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-around;
+  justify-content: space-around;
+}
+
+.img-box {
+  width: 250px;
+  position: relative;
+}
+
+.img {
+  height: 250px;
+  width: 250px;
+  object-fit: cover;
+}
+
+.image-section-heading {
+  display: flex;
+    height: 120px;
+    flex-direction: column;
+    justify-content: space-evenly;
+    margin-left: 10px;
+}
+
+.search-location {
+  width: 145px;
+}
+
+.select-destination {
+  position: absolute;
+  top: 220px;
+  left: 10px;
+}
+
+.date-error {
+  color: red;
 }
 
 .hidden {

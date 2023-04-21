@@ -24,16 +24,40 @@ const pastTrips = document.getElementById("pastTripsBox"),
       username = document.getElementById("username"),
       password = document.getElementById("password"),
       loginPage = document.getElementById("loginBody"),
-      mainPage = document.getElementById("mainPage");
+      mainPage = document.getElementById("mainPage"),
+      destinationDisplay = document.getElementById("destinationDisplay"),
+      showFormBtn = document.getElementById("bookTrip"),
+      newTripForm = document.getElementById("newTripFormContainer"),
+      formInputs = document.getElementById("formInputField"),
+      destinationHeader = document.getElementById("destSelect"),
+      dateError = document.getElementById("dateError"),
+      locationSearch = document.getElementById("locationSearch"),
+      formIncomplete = document.getElementById("errorMessage");
 
 /* Global Variables */
 let user,
     tripId,
     destinations,
     travelers,
-    number; 
+    number,
+    locations; 
 
 /* DOM manipulation */
+const resetDestinationDisplay = () => {
+  locations.forEach(location => {
+    location.parentElement.classList.remove('hidden');
+  })
+}
+
+const displayDestinations = () => {
+  destinations.forEach(dest => {
+    destinationDisplay.innerHTML += `<div class="img-box">
+    <img src=${dest.image} alt=${dest.alt} class="img">
+    <button class="select-destination" id="chooseDestination" name="${dest.destination}">${dest.destination}</button>
+    </div>`;
+  })
+}
+
 const displayData = () => {
   displayPast();
   displayUpcoming();
@@ -72,6 +96,27 @@ const clearDisplay = () => {
 }
 
 /* Data manipulators */
+const clearInputs = () => {
+  dateInput.value = "";
+  daysInput.value = "";
+  travelersInput.value = "";
+  destinationInput.value = "";
+}
+
+const setEventListeners = () => {
+  const destButtons = document.querySelectorAll("#chooseDestination");
+  
+  destButtons.forEach(node => {
+    node.addEventListener('click', () => {
+      destinationDisplay.classList.add('hidden');
+      formInputs.classList.remove('hidden');
+      destinationHeader.classList.add('hidden');
+      destinationInput.value = node.name;
+      locationSearch.value = "";
+    })
+  })
+}
+
 const setUserData = () => {
   fetchAllData()
   .then(data => {
@@ -83,6 +128,7 @@ const setUserData = () => {
     displayData();
     tripId = data[0].trips.length + 1;
     destinations = data[1].destinations;
+    displayDestinations();
   })
 };
 
@@ -176,7 +222,20 @@ window.addEventListener('load', () => {
 
 bookButton.addEventListener('click', (event) => {
   event.preventDefault();
-  addData();
+  let inputFields = [];
+  inputs.forEach(input => inputFields.push(input))
+  if (inputFields.every(input => input.value)) {
+    addData();
+    formInputs.classList.add('hidden');
+    mainPage.classList.remove('hidden');
+    newTripForm.classList.add('hidden');
+    destinationHeader.classList.remove('hidden');
+    destinationDisplay.classList.remove('hidden');
+    clearInputs();
+    resetDestinationDisplay();
+  } else {
+    formIncomplete.innerText = "Please fill out all fields";
+  }
 });
 
 inputs.forEach(input => {
@@ -184,6 +243,10 @@ inputs.forEach(input => {
     if (destinationInput.value) {
       getPrice();
     }
+
+    if (input.value) {
+      formIncomplete.innerText = "";
+    } 
   });
 });
 
@@ -191,9 +254,51 @@ loginBtn.addEventListener('click', (event) => {
   event.preventDefault();
   
   if (checkUsername() && password.value === "travel") {
-  
     loginPage.classList.add('hidden');
     mainPage.classList.remove('hidden');
     setUserData();
   }
+});
+
+showFormBtn.addEventListener('click', () => {
+  newTripForm.classList.remove('hidden');
+  mainPage.classList.add('hidden');
+  setEventListeners();
+  dateInput.min = new Date().toJSON().slice(0, 10);
+  locations = document.querySelectorAll(".select-destination");
+})
+
+dateInput.addEventListener('input',  () => {
+  if (dateInput.value < new Date().toJSON().slice(0, 10)) {
+    dateError.innerText = "Please select a valid date";
+    dateInput.value = new Date().toJSON().slice(0, 10);
+  } else {
+    dateError.innerText = "";
+  }
+});
+
+daysInput.addEventListener('input',  () => {
+  if (daysInput.value < 1) {
+    daysInput.value = "";
+  }
+});
+
+travelersInput.addEventListener('input',  () => {
+  if (travelersInput.value < 1) {
+    travelersInput.value = "";
+  }
+});
+
+locationSearch.addEventListener('input', () => {
+  const inputCtrl = locationSearch.value.toUpperCase();
+  
+  locations.forEach(location => {
+    const nameCtrl = location.name.toUpperCase();
+
+    if (!nameCtrl.includes(inputCtrl)) {
+      location.parentElement.classList.add('hidden');
+    } else {
+      location.parentElement.classList.remove('hidden');
+    } 
+  })
 })
