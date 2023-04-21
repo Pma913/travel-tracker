@@ -13,6 +13,7 @@ const pastTrips = document.getElementById("pastTripsBox"),
       pendingTrips = document.getElementById("pendingTripsBox"),
       totalCost = document.getElementById("displayPrice"),
       userName = document.getElementById("username"),
+      displayUser = document.getElementById("usernameDisplay"),
       dateInput = document.getElementById("date"),
       daysInput = document.getElementById("numberOfDays"),
       travelersInput = document.getElementById("numberOfTravelers"),
@@ -21,7 +22,6 @@ const pastTrips = document.getElementById("pastTripsBox"),
       tripPrice = document.getElementById("newTripPrice"),
       inputs = document.querySelectorAll(".data-input"),
       loginBtn = document.getElementById("loginBtn"),
-      username = document.getElementById("username"),
       password = document.getElementById("password"),
       loginPage = document.getElementById("loginBody"),
       mainPage = document.getElementById("mainPage"),
@@ -53,7 +53,7 @@ const displayDestinations = () => {
   destinations.forEach(dest => {
     destinationDisplay.innerHTML += `<div class="img-box">
     <img src=${dest.image} alt=${dest.alt} class="img">
-    <button class="select-destination" id="chooseDestination" name="${dest.destination}">${dest.destination}</button>
+    <button class="select-destination btn" id="chooseDestination" name="${dest.destination}">${dest.destination}</button>
     </div>`;
   })
 }
@@ -62,12 +62,13 @@ const displayData = () => {
   displayPast();
   displayUpcoming();
   displayYearCost();
-  displayName();
 }
 
 const displayPast = () => {
   user.tripData.forEach(trip => {
-    pastTrips.innerHTML += `<h4>${trip.itinerary.destination}</h4>`;
+    if (trip.date < user.date) {
+      pastTrips.innerHTML += `<h4>${trip.itinerary.destination}</h4>`;
+    }
   });
 }
 
@@ -85,13 +86,12 @@ const displayYearCost = () => {
 }
 
 const displayName = () => {
-  userName.innerText = ` ${user.name}`
+  displayUser.innerText = ` ${user.name}`
 }
 
 const clearDisplay = () => {
   pastTrips.innerHTML = ``;
   pendingTrips.innerHTML = ``;
-  userName.innerText = ``;
   totalCost.innerText = ``;
 }
 
@@ -125,7 +125,9 @@ const setUserData = () => {
     user.addItineraries(data[1].destinations)
     user.getUpcomingTrips();
     user.getTotalCost("2021");
+    user.getCurrentDate();
     displayData();
+    displayName();
     tripId = data[0].trips.length + 1;
     destinations = data[1].destinations;
     displayDestinations();
@@ -133,7 +135,7 @@ const setUserData = () => {
 };
 
 const checkUsername = () => {
-  let login = username.value
+  let login = userName.value
   let splitLogin = login.split('')
   let letters = [];
   let numbers = [];

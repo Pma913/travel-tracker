@@ -8,8 +8,8 @@
 </head>
 <body id="mainBody">
   <section id="loginBody" class="login">
-    <div id="loginContainer">
-      <form>
+    <div id="loginContainer" class="login-container">
+      <form class="login-form">
         <h4>Travel Tracker Login</h4>
         <section class="login-input">
           <label for="username">Username:</label>
@@ -20,15 +20,15 @@
           <input class="login-input" id="password" type="password">
         </section>
         <section class="login-input">
-          <input type="submit" id="loginBtn" class="login-button"  value="login">
+          <input type="submit" id="loginBtn" class="login-button btn"  value="login">
         </section>
       </form>
     </div>
   </section>
-  <section id="mainPage" class="hidden">
+  <section id="mainPage" class="main-page hidden">
     <header id="header">
       <h1 id="appName">Travel Tracker</h1>
-      <h2 id="welcomeUser">Welcome:<span id="username">User</span></h2>
+      <h2 id="welcomeUser">Welcome:<span id="usernameDisplay">User</span></h2>
     </header>
     <main id="main">
       <div id="dataDisplay" class="data-display">
@@ -47,7 +47,7 @@
           <h4 id="displayPrice"></h4>
         </section>
       </div>
-      <button id="bookTrip" class="book-trip">Let's book a trip!</h2>
+      <button id="bookTrip" class="book-trip btn">Let's book a trip!</h2>
     </main>
   </section>
   <section id="newTripFormContainer" class="form-container hidden">
@@ -72,7 +72,7 @@
         </section>
         <p id="priceDisplay" class="price">Price: $<span id="newTripPrice">0</span> (includes 10% agent fee)</p>
         <p class="error-message" id="errorMessage"></p>
-        <input type="submit" id="userInputBtn" class="user-input button" value="book trip">
+        <input type="submit" id="userInputBtn" class="user-input button btn" value="book trip">
       </form>
     </section>
     <section class="destination-select" id="destSelect">

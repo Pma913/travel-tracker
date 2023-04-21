@@ -8,6 +8,7 @@
 
 html {
   height: 100vh;
+  background-color: rgba(60, 173, 120, 0.443);
 }
 
 header {
@@ -52,10 +53,52 @@ header {
 }
 
 .login {
+  background-color: rgba(60, 173, 120, 0.443);
+}
+
+.login-container,
+.login {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+
+.login-container {
+  width: 300px;
+  height: 300px;
+  border-bottom: solid 5px black;
+  border-radius: 20px;
+  background-color: rgb(255, 255, 255);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 12px;
+  height: 90%;
+  width: 90%;
+}
+
+.btn {
+  cursor: pointer;
+  color: black;
+  background-color: rgb(136 214 219);
+  height: 35px;
+  min-width: 90px;
+  border-radius: 5px;
+  transition: .3s
+}
+
+.btn:hover {
+  background-color:  rgb(85, 175, 182);
+  color: rgb(0, 0, 0);
+}
+
+.login-button {
+  width: 90px;
 }
 
 .destination-display {
@@ -90,8 +133,15 @@ header {
 
 .select-destination {
   position: absolute;
-  top: 220px;
+  top: 210px;
   left: 10px;
+}
+
+
+.login-form,
+.destination-select,
+.main-page {
+  background-color: rgba(60, 173, 120, 0.443);
 }
 
 .date-error {
