@@ -29,7 +29,8 @@ const pastTrips = document.getElementById("pastTripsBox"),
       showFormBtn = document.getElementById("bookTrip"),
       newTripForm = document.getElementById("newTripFormContainer"),
       formInputs = document.getElementById("formInputField"),
-      destinationHeader = document.getElementById("destSelect");
+      destinationHeader = document.getElementById("destSelect"),
+      dateError = document.getElementById("dateError");
 
 /* Global Variables */
 let user,
@@ -242,4 +243,26 @@ showFormBtn.addEventListener('click', () => {
   mainPage.classList.add('hidden');
   displayDestinations();
   setEventListeners();
+  dateInput.min = new Date().toJSON().slice(0, 10);
 })
+
+dateInput.addEventListener('input',  () => {
+  if (dateInput.value < new Date().toJSON().slice(0, 10)) {
+    dateError.innerText = "Please select a valid date";
+    dateInput.value = new Date().toJSON().slice(0, 10);
+  } else {
+    dateError.innerText = "";
+  }
+});
+
+daysInput.addEventListener('input',  () => {
+  if (daysInput.value < 1) {
+    daysInput.value = "";
+  }
+});
+
+travelersInput.addEventListener('input',  () => {
+  if (travelersInput.value < 1) {
+    travelersInput.value = "";
+  }
+});
