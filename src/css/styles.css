@@ -109,22 +109,32 @@ header {
 }
 
 .img-box {
-  width: 250px;
+  width: 400px;
+  height: 300px;
+  border-radius: 20px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  border-bottom: solid 5px black;
   position: relative;
+  margin-top: 14px;
+
 }
 
 .img {
-  height: 250px;
-  width: 250px;
+  height: 90%;
+  width: 90%;
+  border-radius: 12px;
   object-fit: cover;
+  margin-top: 4%;
 }
 
 .image-section-heading {
   display: flex;
-    height: 120px;
-    flex-direction: column;
-    justify-content: space-evenly;
-    margin-left: 10px;
+  height: 120px;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin-left: 10px;
 }
 
 .search-location {
@@ -133,8 +143,8 @@ header {
 
 .select-destination {
   position: absolute;
-  top: 210px;
-  left: 10px;
+  top: 245px;
+  left: 25px;
 }
 
 
