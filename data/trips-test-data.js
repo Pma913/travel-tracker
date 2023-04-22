@@ -56,7 +56,7 @@ export default { trips: [
   travelers: 3,
   date: "2023/06/29",
   duration: 9,
-  status: "approved",
+  status: "pending",
   suggestedActivities: []
   }
 ]};
