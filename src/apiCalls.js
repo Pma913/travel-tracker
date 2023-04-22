@@ -2,15 +2,20 @@ const fetchAPI = (url) => {
   return fetch(url)
   .then(res => {
       if (!res.ok) {
-        throw new Error('Something went wrong!')
+        throw (res)
       }
       return res.json()
     })
+    .catch(err => {
+    console.log(err.statusText)
+    if (err.status > 400 && err.status < 500) {
+      alert("Server is missing!")
+    }
+  })
 };
 
 const fetchAllData = () => {
   return Promise.all([
-    // fetchAPI('http://localhost:3001/api/v1/travelers'),
     fetchAPI('http://localhost:3001/api/v1/trips'),
     fetchAPI('http://localhost:3001/api/v1/destinations')
   ]);
@@ -20,9 +25,15 @@ const fetchTravelers = () => {
   return fetch('http://localhost:3001/api/v1/travelers')
   .then(res => {
     if (!res.ok) {
-      throw new Error('Something went wrong!')
+      throw (res)
     }
     return res.json()
+  })
+  .catch(err => {
+    console.log(err.statusText)
+    if (err.status > 400 && err.status < 500) {
+      alert("Server is missing!")
+    }
   })
 }
 
@@ -36,19 +47,31 @@ const postTrip = (data) => {
   })
   .then(res => {
       if (!res.ok) {
-        throw new Error('Something went wrong!')
+        throw (err)
       }
       return res.json()
     })
+    .catch(err => {
+    console.log(err.statusText)
+    if (err.status > 400 && err.status < 500) {
+      alert("Server is missing!")
+    }
+  })
 };
 
 const fetchTrips = () => {
   return fetch('http://localhost:3001/api/v1/trips')
   .then(res => {
     if (!res.ok) {
-      throw new Error('Something went wrong!')
+      throw (res)
     }
     return res.json()
+  })
+  .catch(err => {
+    console.log(err.statusText)
+    if (err.status > 400 && err.status < 500) {
+      alert("Server is missing!")
+    }
   })
 }
 

@@ -65,9 +65,13 @@ const displayData = () => {
 }
 
 const displayPast = () => {
+  console.log(user.tripData[0].itinerary)
   user.tripData.forEach(trip => {
     if (trip.date < user.date) {
-      pastTrips.innerHTML += `<h4>${trip.itinerary.destination}</h4>`;
+      pastTrips.innerHTML += `<div height="250px" width="350px" class="dash-img-box">
+      <h4 class="dest-name">${trip.itinerary.destination}</h4>
+      <img height="90%" width="90%" src="${trip.itinerary.image}" alt="${trip.itinerary.alt} class="past-img">
+      </div>`;
     }
   });
 }
@@ -77,7 +81,10 @@ const displayUpcoming = () => {
     pendingTrips.innerHTML += `<h4>You have no pending trips</h4>`;
   }
   user.upcomingDestinations.forEach(trip => {
-    pendingTrips.innerHTML += `<h4>${trip.itinerary.destination}</h4>`;
+    pendingTrips.innerHTML += `<div height="250px" width="350px" class="dash-img-box">
+    <h4 class="dest-name">${trip.itinerary.destination}</h4>
+    <img height="90%" width="90%" src="${trip.itinerary.image}" alt="${trip.itinerary.alt} class="upcoming-img">
+    </div>`;
   });
 }
 
