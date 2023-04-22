@@ -1,46 +1,70 @@
+import chai from 'chai';
 const expect = chai.expect;
+import Agent from '../src/Agent.js';
 import trips from '../data/trips-test-data.js';
 import travelers from '../data/user-test-data.js';
 import destinations from '../data/destination-test-data.js';
 import userItinerary from '../data/combined-travel-data.js';
+import User from '../src/User.js';
 
 describe('Agent', () => {
+  let agent;
+  let user;
+  let pending;
+  let theseTrips;
+  const setTrip = () => {
+    let todaysDate = new Date().toJSON().slice(0,10);
+    let formatedDate = todaysDate.split('-').join('/');
+    theseTrips[3].date = formatedDate;
+  }
   beforeEach(() => {
-    agent = new Agent();
+    theseTrips = trips.trips;
+    
+    agent = new Agent(trips.trips, destinations.destinations, travelers.travelers);
+    pending = [{
+    id: 6,
+    userID: 2,
+    destinationID: 6,
+    travelers: 3,
+    date: "2023/06/29",
+    duration: 9,
+    status: "pending",
+    suggestedActivities: []
+    }]
+  });
+  it('should be a function', () => {
+    expect(Agent).to.be.a('function');
   });
 
-  it.skip('should have default properties', () => {
+  it('should have default properties', () => {
     expect(agent.newTrips).to.equal(undefined);
     expect(agent.totalIncome).to.equal(undefined);
     expect(agent.todaysTrips).to.equal(undefined);
   });
 
-  it.skip('should have a method to set new trips', () => {
+  it('should have a method to set new trips', () => {
     agent.getTripRequests();
-    expect(agent.newTrips).to.deep.equal();
+    expect(agent.newTrips).to.deep.equal(pending);
   });
 
-  it.skip('should have a method to set total income', () => {
+  it('should have a method to set total income', () => {
     agent.getTotalIncome();
-    expect(agent.totalIncome).to.equal();
+    expect(agent.totalIncome).to.equal(2062);
   });
 
-  it.skip('should have a method to set todays trips', () => {
+  it('should have a method to set todays trips', () => {
+    setTrip();
     agent.getTodaysTrips();
-    expect(agent.todaysTrips).to.equal();
+    expect(agent.todaysTrips).to.deep.equal([theseTrips[3]]);
   });
 
-  it.skip('should be able to approve a trip', () => {
-    expect(agent.approveTrip(tripNumber)).to.equal();
+  it('should be able to locate a trip', () => {
+    agent.getTripRequests();
+    expect(agent.locateTrip(6)).to.equal(theseTrips[5]);
   });
 
-  it.skip('should be able to deny a trip', () => {
-    agent.deleteTrip();
-    expect(user.upcomingDestinations).to.deep.equal()
-  });
-
-  it.skip('should have a method to get user class', () => {
-    agent.findUser("[name here]");
-    expect(this.user).to.equal()
+  it('should have a method to get user class', () => {
+    agent.findUser("Ham Leadbeater");
+    expect(agent.client).to.equal(agent.users[0])
   });
 })
