@@ -13,6 +13,7 @@ import { updateTrip } from './apiCalls';
 /* Query Selectors */
 const pastTrips = document.getElementById("pastTripsBox"),
       pendingTrips = document.getElementById("pendingTripsBox"),
+      approvedTrips = document.getElementById("approvedTripsBox"),
       totalCost = document.getElementById("displayPrice"),
       userName = document.getElementById("username"),
       displayUser = document.getElementById("usernameDisplay"),
@@ -70,27 +71,38 @@ const displayData = () => {
 }
 
 const displayPast = () => {
-  user.tripData.forEach(trip => {
-    if (trip.date < user.date) {
-      pastTrips.innerHTML += `<div height="250px" width="350px" class="dash-img-box">
+  user.getPastTrips()
+  user.past.forEach(trip => {
+    pastTrips.innerHTML += `<div height="250px" width="350px" class="dash-img-box">
       <h4 class="dest-name">${trip.itinerary.destination}</h4>
       <img height="90%" width="90%" src="${trip.itinerary.image}" alt="${trip.itinerary.alt} class="img">
       </div>`;
-    }
   });
 }
 
 const displayUpcoming = () => {
-  if (!user.upcomingDestinations.length) {
-    pendingTrips.innerHTML += `<h4>You have no pending trips</h4>`;
+  if (!user.approved.length) {
+    pendingTrips.innerHTML += `<h4>You have no approved trips coming up</h4>`;
   }
-  user.upcomingDestinations.forEach(trip => {
-    pendingTrips.innerHTML += `<div height="250px" width="350px" class="dash-img-box">
+
+  user.getApprovedTrips();
+  user.approved.forEach(trip => {
+    approvedTrips.innerHTML += `<div height="250px" width="350px" class="dash-img-box">
     <h4 class="dest-name">${trip.itinerary.destination}</h4>
     <img height="90%" width="90%" src="${trip.itinerary.image}" alt="${trip.itinerary.alt} class="img">
     </div>`;
   });
 }
+
+const displayPending = () => {
+  user.getPending();
+  user.pending.forEach(trip => {
+    pendingTrips.innerHTML += `<div height="250px" width="350px" class="dash-img-box">
+    <h4 class="dest-name">${trip.itinerary.destination}</h4>
+    <img height="90%" width="90%" src="${trip.itinerary.image}" alt="${trip.itinerary.alt} class="img">
+    </div>`;
+  })
+} 
 
 const displayYearCost = () => {
   totalCost.innerText = `$${user.totalCost}`
