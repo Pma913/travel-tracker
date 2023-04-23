@@ -37,12 +37,13 @@ const pastTrips = document.getElementById("pastTripsBox"),
       locationSearch = document.getElementById("locationSearch"),
       formIncomplete = document.getElementById("errorMessage"),
       agentPage = document.getElementById("agentPage"),
-      pendingTripsBox = document.getElementById("pendingTripsDisplay");
+      pendingTripsBox = document.getElementById("pendingTripsDisplay"),
+      agentPrice = document.getElementById("agentTotalIncome"),
+      todaysTrips = document.getElementById("todaysTripsDisplay");
 
 /* Global Variables */
 let user,
     agent,
-    tripId,
     destinations,
     travelers,
     number,
@@ -102,16 +103,17 @@ const displayPending = () => {
 } 
 
 const displayYearCost = () => {
-  totalCost.innerText = `$${user.totalCost}`
+  totalCost.innerText = `$${user.totalCost}`;
 }
 
 const displayName = () => {
-  displayUser.innerText = ` ${user.name}`
+  displayUser.innerText = ` ${user.name}`;
 }
 
 const clearDisplay = () => {
   pastTrips.innerHTML = ``;
   pendingTrips.innerHTML = ``;
+  approvedTrips.innerHTML = ``;
   totalCost.innerText = ``;
 }
 
@@ -120,7 +122,7 @@ const clearAgentDisplay = () => {
 }
 
 const displayAgentPage = () => {
-
+  agentPrice.innerText = Math.floor(agent.totalIncome);
   agent.newTrips.forEach(trip => {
     const location = agent.locations.find(loc => loc.id === trip.destinationID)
     let user = travelers.find(pers => pers.id === trip.userID)
@@ -148,9 +150,9 @@ const checkDate = () => {
 const approveTrip = (tripNum) => {
   let tripToApprove = agent.locateTrip(parseInt(tripNum))
   tripToApprove.status = "approved";
-  deleteTrip(tripNum, tripToApprove);
+  tripToApprove.id = Date.now();
+  deleteTrip(tripNum, agent.locateTrip(parseInt(tripNum)));
   postTrip(tripToApprove)
-  .then(res => console.log('PUT message:', res.message))
 }
 
 const deleteTrip = (tripNum) => {
@@ -205,7 +207,6 @@ const setUserData = () => {
     user.getTotalCost("2021");
     displayData();
     displayName();
-    tripId = data[0].trips.length + 1;
     destinations = data[1].destinations;
     displayDestinations();
   })
@@ -254,7 +255,7 @@ const addData = () => {
   });
 
   let tripData = {
-    id: tripId, 
+    id: Date.now(), 
     userID: user.id, 
     destinationID: selectedDestination.id, 
     travelers: parseInt(travelersInput.value), 
@@ -275,7 +276,6 @@ const addData = () => {
       user.getTotalCost("2021");
       clearDisplay();
       displayData();
-      tripId = data.trips.length + 1;
     })
   })
 };
