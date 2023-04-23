@@ -42,6 +42,11 @@
           <div id="pendingTripsBox" class="pending-trips-box"></div>
           <!-- Add content here for pending trips -->
         </section>
+        <section id="approvedTripsSection" class="approved-trips-section data-d">
+          <h3 id="approvedTrips">Approved Trips</h3>
+          <div id="approvedTripsBox" class="approved-trips-box"></div>
+          <!-- Add content here for approved trips -->
+        </section>
         <section id="cost" class="cost">
           <h3 id="costTitle">Total Cost</h3>
           <h4 id="displayPrice"></h4>
@@ -83,6 +88,25 @@
       </div>
       <div id="destinationDisplay" class="destination-display"></div>
     </section>
+  </section>
+  <section class="agent-page hidden" id="agentPage">
+    <header>
+      <h1>Welcome Super Agent #354</h1>
+      <h3>time to collect that commission</h3>
+    </header>
+    <div id="displaySections">
+      <section id="newTripRequests">
+        <h2>Pending Trips</h2>
+        <div id="pendingTripsDisplay"></div>
+      </section>
+      <section id="incomeInYear">
+        <h2>Your income in last 365 days: <span id="agentTotalIncome"></span></h2>
+      </section>
+      <section id="tripsHappeningToday">
+        <h2 id="todaysTrips">Trips in progress today</h2>
+        <div id="todaysTripsDisplay"></div>
+      </section>
+    </div>
   </section>
   <script src="bundle.js"></script>
   </body>

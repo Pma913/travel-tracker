@@ -7,10 +7,13 @@ import { fetchAllData } from './apiCalls';
 import { postTrip } from './apiCalls';
 import { fetchTrips } from './apiCalls';
 import { fetchTravelers } from './apiCalls';
+import Agent from './Agent';
+import { updateTrip } from './apiCalls';
 
 /* Query Selectors */
 const pastTrips = document.getElementById("pastTripsBox"),
       pendingTrips = document.getElementById("pendingTripsBox"),
+      approvedTrips = document.getElementById("approvedTripsBox"),
       totalCost = document.getElementById("displayPrice"),
       userName = document.getElementById("username"),
       displayUser = document.getElementById("usernameDisplay"),
@@ -32,10 +35,13 @@ const pastTrips = document.getElementById("pastTripsBox"),
       destinationHeader = document.getElementById("destSelect"),
       dateError = document.getElementById("dateError"),
       locationSearch = document.getElementById("locationSearch"),
-      formIncomplete = document.getElementById("errorMessage");
+      formIncomplete = document.getElementById("errorMessage"),
+      agentPage = document.getElementById("agentPage"),
+      pendingTripsBox = document.getElementById("pendingTripsDisplay");
 
 /* Global Variables */
 let user,
+    agent,
     tripId,
     destinations,
     travelers,
@@ -65,28 +71,38 @@ const displayData = () => {
 }
 
 const displayPast = () => {
-  console.log(user.tripData[0].itinerary)
-  user.tripData.forEach(trip => {
-    if (trip.date < user.date) {
-      pastTrips.innerHTML += `<div height="250px" width="350px" class="dash-img-box">
+  user.getPastTrips()
+  user.past.forEach(trip => {
+    pastTrips.innerHTML += `<div height="250px" width="350px" class="dash-img-box">
       <h4 class="dest-name">${trip.itinerary.destination}</h4>
-      <img height="90%" width="90%" src="${trip.itinerary.image}" alt="${trip.itinerary.alt} class="past-img">
+      <img height="90%" width="90%" src="${trip.itinerary.image}" alt="${trip.itinerary.alt} class="img">
       </div>`;
-    }
   });
 }
 
 const displayUpcoming = () => {
-  if (!user.upcomingDestinations.length) {
-    pendingTrips.innerHTML += `<h4>You have no pending trips</h4>`;
+  if (!user.approved.length) {
+    pendingTrips.innerHTML += `<h4>You have no approved trips coming up</h4>`;
   }
-  user.upcomingDestinations.forEach(trip => {
-    pendingTrips.innerHTML += `<div height="250px" width="350px" class="dash-img-box">
+
+  user.getApprovedTrips();
+  user.approved.forEach(trip => {
+    approvedTrips.innerHTML += `<div height="250px" width="350px" class="dash-img-box">
     <h4 class="dest-name">${trip.itinerary.destination}</h4>
-    <img height="90%" width="90%" src="${trip.itinerary.image}" alt="${trip.itinerary.alt} class="upcoming-img">
+    <img height="90%" width="90%" src="${trip.itinerary.image}" alt="${trip.itinerary.alt} class="img">
     </div>`;
   });
 }
+
+const displayPending = () => {
+  user.getPending();
+  user.pending.forEach(trip => {
+    pendingTrips.innerHTML += `<div height="250px" width="350px" class="dash-img-box">
+    <h4 class="dest-name">${trip.itinerary.destination}</h4>
+    <img height="90%" width="90%" src="${trip.itinerary.image}" alt="${trip.itinerary.alt} class="img">
+    </div>`;
+  })
+} 
 
 const displayYearCost = () => {
   totalCost.innerText = `$${user.totalCost}`
@@ -102,7 +118,59 @@ const clearDisplay = () => {
   totalCost.innerText = ``;
 }
 
+const clearAgentDisplay = () => {
+  pendingTripsBox.innerHTML = "";
+}
+
+const displayAgentPage = () => {
+
+  agent.newTrips.forEach(trip => {
+    const location = agent.locations.find(loc => loc.id === trip.destinationID)
+    let user = travelers.find(pers => pers.id === trip.userID)
+    pendingTripsBox.innerHTML += `<div class="pend-box">
+    <h3>location: ${location.destination}</h3>
+    <h3>Client:</h3><p> ${user.name}</p>
+    <h3>Date: ${trip.date}</h3>
+    <h3>Number of Travelers: ${trip.travelers}</h3>
+    <h3>Duration: ${trip.duration} days</h3>
+    <h3>trip id: ${trip.id}</h3>
+    <button name=${trip.id} class="approval-button" id="approveBtn">Approve</button>
+    <button name=${trip.id} class="delete-button" id="deleteBtn">Revoke</button>
+    </div>`
+  })
+}
+
 /* Data manipulators */
+const approveTrip = (tripNum) => {
+  let tripToApprove = agent.locateTrip(parseInt(tripNum))
+  tripToApprove.status = "approved";
+  deleteTrip(tripNum, tripToApprove);
+  postTrip(tripToApprove)
+  .then(res => console.log('PUT message:', res.message))
+}
+
+const deleteTrip = (tripNum) => {
+  let trip = agent.locateTrip(parseInt(tripNum))
+  updateTrip(tripNum, trip)
+  .then(res => {
+    console.log('delete message:', res.message)
+    clearAgentDisplay();
+    setAgentData();
+  })
+  console.log("heres the trip: ",trip)
+}
+const setAgentData = () => {
+  fetchAllData()
+  .then(data => {
+    agent = new Agent(data[0].trips, data[1].destinations, travelers)
+    agent.getTodaysTrips();
+    agent.getTotalIncome();
+    agent.getTripRequests();
+    displayAgentPage();
+    setButtonListener();
+  })
+}
+
 const clearInputs = () => {
   dateInput.value = "";
   daysInput.value = "";
@@ -138,6 +206,7 @@ const setUserData = () => {
     tripId = data[0].trips.length + 1;
     destinations = data[1].destinations;
     displayDestinations();
+    console.log('user trips!: ', user.tripData)
   })
 };
 
@@ -222,6 +291,23 @@ const addData = () => {
 };
 
 /* Event Listeners */
+const setButtonListener = () => {
+  const approval = document.querySelectorAll(".approval-button")
+  const denial = document.querySelectorAll(".delete-button")
+
+  approval.forEach(aprv => {
+    aprv.addEventListener('click', (target) => {
+    approveTrip(target.target.name)
+    })
+  })
+
+  denial.forEach(den =>{
+    den.addEventListener('click', (target) => {
+    deleteTrip(target.target.name)
+    })
+  })
+}
+
 window.addEventListener('load', () => {
   fetchTravelers()
   .then(data => {
@@ -266,6 +352,10 @@ loginBtn.addEventListener('click', (event) => {
     loginPage.classList.add('hidden');
     mainPage.classList.remove('hidden');
     setUserData();
+  } else if (password.value === "travel" && userName.value === "agency") {
+    loginPage.classList.add('hidden');
+    agentPage.classList.remove('hidden');
+    setAgentData();
   }
 });
 
