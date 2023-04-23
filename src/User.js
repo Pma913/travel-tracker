@@ -8,7 +8,7 @@ class User {
     this.past = [];
     this.pending = [];
     this.approved = [];
-    this.date;  
+    this.date = new Date().toJSON().slice(0, 10).split('-').join('/');  
   }
 
   findTrips(trips) {
@@ -52,7 +52,6 @@ class User {
   }
 
   getPastTrips() {
-    this.getCurrentDate()
     this.tripData.forEach(trip => {
       if (trip.date < this.date) {
         this.past.push(trip)
@@ -60,43 +59,20 @@ class User {
     })
   }
 
-  getUpcomingTrips() {
-    this.getCurrentDate()
-    this.upcomingDestinations = this.tripData.filter(trip => trip.date > this.date);
-
-    if (!this.upcomingDestinations.length) {
-      return "You have no upcoming trips."
-    }
-  }
-
   getPendingTrips() {
-    this.getCurrentDate()
     this.pending = this.tripData.filter(trip => trip.status === "pending");
 
-    if (!this.upcomingDestinations.length) {
+    if (!this.pending.length) {
       return "You have no upcoming trips."
     }
   }
 
   getApprovedTrips() {
-    this.getCurrentDate()
     this.tripData.forEach(trip => {
       if (trip.status === "approved" && trip.date >= this.date) {
         this.approved.push(trip)
       }
     })
-  }
-
-  getCurrentDate() {
-    let currentDate = new Date().toJSON().slice(0, 10);
-    let splitDate = currentDate.split('')
-    splitDate.forEach((num, index) => {
-      if (num === '-') {
-        splitDate.splice(index, 1, '/')
-      }
-    }) 
-    
-    this.date = splitDate.join('')
   }
 }
 
