@@ -8,6 +8,7 @@ import { postTrip } from './apiCalls';
 import { fetchTrips } from './apiCalls';
 import { fetchTravelers } from './apiCalls';
 import Agent from './Agent';
+import { updateTrip } from './apiCalls';
 
 /* Query Selectors */
 const pastTrips = document.getElementById("pastTripsBox"),
@@ -105,6 +106,10 @@ const clearDisplay = () => {
   totalCost.innerText = ``;
 }
 
+const clearAgentDisplay = () => {
+  pendingTripsBox.innerHTML = "";
+}
+
 const displayAgentPage = () => {
 
   agent.newTrips.forEach(trip => {
@@ -125,12 +130,21 @@ const displayAgentPage = () => {
 
 /* Data manipulators */
 const approveTrip = (tripNum) => {
-  let trip = agent.locateTrip(parseInt(tripNum))
-  console.log("heres the trip: ",trip)
+  let tripToApprove = agent.locateTrip(parseInt(tripNum))
+  tripToApprove.status = "approved";
+  deleteTrip(tripNum, tripToApprove);
+  postTrip(tripToApprove)
+  .then(res => console.log('PUT message:', res.message))
 }
 
 const deleteTrip = (tripNum) => {
   let trip = agent.locateTrip(parseInt(tripNum))
+  updateTrip(tripNum, trip)
+  .then(res => {
+    console.log('delete message:', res.message)
+    clearAgentDisplay();
+    setAgentData();
+  })
   console.log("heres the trip: ",trip)
 }
 const setAgentData = () => {
@@ -142,7 +156,6 @@ const setAgentData = () => {
     agent.getTripRequests();
     displayAgentPage();
     setButtonListener();
-  
   })
 }
 
@@ -181,6 +194,7 @@ const setUserData = () => {
     tripId = data[0].trips.length + 1;
     destinations = data[1].destinations;
     displayDestinations();
+    console.log('user trips!: ', user.tripData)
   })
 };
 
@@ -271,14 +285,12 @@ const setButtonListener = () => {
 
   approval.forEach(aprv => {
     aprv.addEventListener('click', (target) => {
-    console.log("trip num", target.target.name)
     approveTrip(target.target.name)
     })
   })
 
   denial.forEach(den =>{
     den.addEventListener('click', (target) => {
-    console.log("trip num", target.target.name)
     deleteTrip(target.target.name)
     })
   })
