@@ -161,8 +161,8 @@ const deleteTrip = (tripNum) => {
     clearAgentDisplay();
     setAgentData();
   })
-  console.log("heres the trip: ",trip)
 }
+
 const setAgentData = () => {
   fetchAllData()
   .then(data => {
@@ -199,22 +199,21 @@ const setEventListeners = () => {
 const setUserData = () => {
   fetchAllData()
   .then(data => {
-    user = new User(travelers.find(trav => trav.id === number))
-    user.findTrips(data[0].trips)
-    user.addItineraries(data[1].destinations)
+    user = new User(travelers.find(trav => trav.id === number));
+    user.findTrips(data[0].trips);
+    user.addItineraries(data[1].destinations);
     user.getTotalCost("2021");
     displayData();
     displayName();
     tripId = data[0].trips.length + 1;
     destinations = data[1].destinations;
     displayDestinations();
-    console.log('user trips!: ', user.tripData)
   })
 };
 
 const checkUsername = () => {
-  let login = userName.value
-  let splitLogin = login.split('')
+  let login = userName.value;
+  let splitLogin = login.split('');
   let letters = [];
   let numbers = [];
 
@@ -226,9 +225,9 @@ const checkUsername = () => {
     }
   })
 
-  let word = letters.join('')
-  number = parseInt(numbers.join(''))
-  let travelerIds = travelers.map(trav => trav.id)
+  let word = letters.join('');
+  number = parseInt(numbers.join(''));
+  let travelerIds = travelers.map(trav => trav.id);
   if (word === "traveler" && travelerIds.includes(number)) {
     return true;
   }
