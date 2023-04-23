@@ -116,13 +116,23 @@ const displayAgentPage = () => {
     <h3>Date: ${trip.date}</h3>
     <h3>Number of Travelers: ${trip.travelers}</h3>
     <h3>Duration: ${trip.duration} days</h3>
-    <button class="approval-button" id="approveBtn">Approve</button>
-    <button class="delete-button" id="deleteBtn">Revoke</button>
+    <h3>trip id: ${trip.id}</h3>
+    <button name=${trip.id} class="approval-button" id="approveBtn">Approve</button>
+    <button name=${trip.id} class="delete-button" id="deleteBtn">Revoke</button>
     </div>`
   })
 }
 
 /* Data manipulators */
+const approveTrip = (tripNum) => {
+  let trip = agent.locateTrip(parseInt(tripNum))
+  console.log("heres the trip: ",trip)
+}
+
+const deleteTrip = (tripNum) => {
+  let trip = agent.locateTrip(parseInt(tripNum))
+  console.log("heres the trip: ",trip)
+}
 const setAgentData = () => {
   fetchAllData()
   .then(data => {
@@ -256,15 +266,21 @@ const addData = () => {
 
 /* Event Listeners */
 const setButtonListener = () => {
-  const approval = document.getElementById("approveBtn")
-  const denial = document.getElementById("deleteBtn")
+  const approval = document.querySelectorAll(".approval-button")
+  const denial = document.querySelectorAll(".delete-button")
 
-  approval.addEventListener('click', () => {
-    console.log('approval')
+  approval.forEach(aprv => {
+    aprv.addEventListener('click', (target) => {
+    console.log("trip num", target.target.name)
+    approveTrip(target.target.name)
+    })
   })
 
-  denial.addEventListener('click', () => {
-    console.log('denial')
+  denial.forEach(den =>{
+    den.addEventListener('click', (target) => {
+    console.log("trip num", target.target.name)
+    deleteTrip(target.target.name)
+    })
   })
 }
 
