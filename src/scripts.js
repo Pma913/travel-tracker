@@ -127,14 +127,16 @@ const displayAgentPage = () => {
     const location = agent.locations.find(loc => loc.id === trip.destinationID)
     let user = travelers.find(pers => pers.id === trip.userID)
     pendingTripsBox.innerHTML += `<div class="pend-box">
-    <h3>location: ${location.destination}</h3>
-    <h3>Client:</h3><p> ${user.name}</p>
-    <h3>Date: ${trip.date}</h3>
-    <h3>Number of Travelers: ${trip.travelers}</h3>
-    <h3>Duration: ${trip.duration} days</h3>
-    <h3>trip id: ${trip.id}</h3>
+    <div class="pend-labels"><h3>location:&nbsp;</h3><p> ${location.destination}</p></div>
+    <div class="pend-labels"><h3>Client:&nbsp;</h3><p> ${user.name}</p></div>
+    <div class="pend-labels"><h3>Date:&nbsp;</h3><p> ${trip.date}</p></div>
+    <div class="pend-labels"><h3>Number of Travelers:&nbsp;</h3><p> ${trip.travelers}</p></div>
+    <div class="pend-labels"><h3>Duration:&nbsp;</h3><p> ${trip.duration} days</p></div>
+    <div class="pend-labels"><h3>trip id:&nbsp;</h3><p> ${trip.id}</p></div>
+    <div class="button-box">
     <button name=${trip.id} class="approval-button" id="approveBtn">Approve</button>
     <button name=${trip.id} class="delete-button" id="deleteBtn">Revoke</button>
+    </div>
     </div>`
   })
 }
