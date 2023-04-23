@@ -75,7 +75,18 @@ const fetchTrips = () => {
   })
 }
 
+const updateTrip = (tripID ,data) => {
+  return fetch(`http://localhost:3001/api/v1/trips/${tripID}`, {
+    method: "DELETE",
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+}
+
 export { fetchAllData };
 export { postTrip };
 export { fetchTrips };
 export { fetchTravelers };
+export { updateTrip };
