@@ -7,6 +7,7 @@ import { fetchAllData } from './apiCalls';
 import { postTrip } from './apiCalls';
 import { fetchTrips } from './apiCalls';
 import { fetchTravelers } from './apiCalls';
+import Agent from './Agent';
 
 /* Query Selectors */
 const pastTrips = document.getElementById("pastTripsBox"),
@@ -32,10 +33,13 @@ const pastTrips = document.getElementById("pastTripsBox"),
       destinationHeader = document.getElementById("destSelect"),
       dateError = document.getElementById("dateError"),
       locationSearch = document.getElementById("locationSearch"),
-      formIncomplete = document.getElementById("errorMessage");
+      formIncomplete = document.getElementById("errorMessage"),
+      agentPage = document.getElementById("agentPage"),
+      pendingTripsBox = document.getElementById("pendingTripsDisplay");
 
 /* Global Variables */
 let user,
+    agent,
     tripId,
     destinations,
     travelers,
@@ -65,12 +69,11 @@ const displayData = () => {
 }
 
 const displayPast = () => {
-  console.log(user.tripData[0].itinerary)
   user.tripData.forEach(trip => {
     if (trip.date < user.date) {
       pastTrips.innerHTML += `<div height="250px" width="350px" class="dash-img-box">
       <h4 class="dest-name">${trip.itinerary.destination}</h4>
-      <img height="90%" width="90%" src="${trip.itinerary.image}" alt="${trip.itinerary.alt} class="past-img">
+      <img height="90%" width="90%" src="${trip.itinerary.image}" alt="${trip.itinerary.alt} class="img">
       </div>`;
     }
   });
@@ -83,7 +86,7 @@ const displayUpcoming = () => {
   user.upcomingDestinations.forEach(trip => {
     pendingTrips.innerHTML += `<div height="250px" width="350px" class="dash-img-box">
     <h4 class="dest-name">${trip.itinerary.destination}</h4>
-    <img height="90%" width="90%" src="${trip.itinerary.image}" alt="${trip.itinerary.alt} class="upcoming-img">
+    <img height="90%" width="90%" src="${trip.itinerary.image}" alt="${trip.itinerary.alt} class="img">
     </div>`;
   });
 }
@@ -102,7 +105,37 @@ const clearDisplay = () => {
   totalCost.innerText = ``;
 }
 
+const displayAgentPage = () => {
+
+  agent.newTrips.forEach(trip => {
+    const location = agent.locations.find(loc => loc.id === trip.destinationID)
+    let user = travelers.find(pers => pers.id === trip.userID)
+    pendingTripsBox.innerHTML += `<div class="pend-box">
+    <h3>location: ${location.destination}</h3>
+    <h3>Client:</h3><p> ${user.name}</p>
+    <h3>Date: ${trip.date}</h3>
+    <h3>Number of Travelers: ${trip.travelers}</h3>
+    <h3>Duration: ${trip.duration} days</h3>
+    <button class="approval-button" id="approveBtn">Approve</button>
+    <button class="delete-button" id="deleteBtn">Revoke</button>
+    </div>`
+  })
+}
+
 /* Data manipulators */
+const setAgentData = () => {
+  fetchAllData()
+  .then(data => {
+    agent = new Agent(data[0].trips, data[1].destinations, travelers)
+    agent.getTodaysTrips();
+    agent.getTotalIncome();
+    agent.getTripRequests();
+    displayAgentPage();
+    setButtonListener();
+  
+  })
+}
+
 const clearInputs = () => {
   dateInput.value = "";
   daysInput.value = "";
@@ -222,6 +255,19 @@ const addData = () => {
 };
 
 /* Event Listeners */
+const setButtonListener = () => {
+  const approval = document.getElementById("approveBtn")
+  const denial = document.getElementById("deleteBtn")
+
+  approval.addEventListener('click', () => {
+    console.log('approval')
+  })
+
+  denial.addEventListener('click', () => {
+    console.log('denial')
+  })
+}
+
 window.addEventListener('load', () => {
   fetchTravelers()
   .then(data => {
@@ -266,6 +312,10 @@ loginBtn.addEventListener('click', (event) => {
     loginPage.classList.add('hidden');
     mainPage.classList.remove('hidden');
     setUserData();
+  } else if (password.value === "travel" && userName.value === "agency") {
+    loginPage.classList.add('hidden');
+    agentPage.classList.remove('hidden');
+    setAgentData();
   }
 });
 
