@@ -156,7 +156,13 @@ header {
   margin-top: 4%;
 }
 
-
+.dash-img-box.img {
+  height: 90%;
+  width: 90%;
+  border-radius: 5px;
+  object-fit: cover;
+  margin-top: 4%;
+}
 
 .image-section-heading {
   display: flex;
@@ -219,4 +225,14 @@ header {
   top: 15px;
   left: 25px;
   background: white;
+}
+
+.pend-box {
+  background-color: white;
+  margin: 5px;
+  display: flex;
+  flex-direction: column;
+  width: 216px;
+  height: 200px;
+  justify-content: space-around;
 }
