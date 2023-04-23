@@ -68,9 +68,9 @@ class User {
   }
 
   getApprovedTrips() {
-    this.tripData.forEach(trip => {
+    this.approved = this.tripData.filter(trip => {
       if (trip.status === "approved" && trip.date >= this.date) {
-        this.approved.push(trip)
+        return true;
       }
     })
   }
