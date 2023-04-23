@@ -67,6 +67,7 @@ const displayDestinations = () => {
 const displayData = () => {
   displayPast();
   displayUpcoming();
+  displayPending();
   displayYearCost();
 }
 
@@ -81,10 +82,6 @@ const displayPast = () => {
 }
 
 const displayUpcoming = () => {
-  if (!user.approved.length) {
-    pendingTrips.innerHTML += `<h4>You have no approved trips coming up</h4>`;
-  }
-
   user.getApprovedTrips();
   user.approved.forEach(trip => {
     approvedTrips.innerHTML += `<div height="250px" width="350px" class="dash-img-box">
@@ -95,7 +92,7 @@ const displayUpcoming = () => {
 }
 
 const displayPending = () => {
-  user.getPending();
+  user.getPendingTrips();
   user.pending.forEach(trip => {
     pendingTrips.innerHTML += `<div height="250px" width="350px" class="dash-img-box">
     <h4 class="dest-name">${trip.itinerary.destination}</h4>
@@ -141,6 +138,13 @@ const displayAgentPage = () => {
 }
 
 /* Data manipulators */
+const checkDate = () => {
+  if (dateInput.value < user.date.split('/').join('-')) {
+    dateError.innerText = "Please select a valid date";
+    return true;
+  } 
+}
+
 const approveTrip = (tripNum) => {
   let tripToApprove = agent.locateTrip(parseInt(tripNum))
   tripToApprove.status = "approved";
@@ -198,9 +202,7 @@ const setUserData = () => {
     user = new User(travelers.find(trav => trav.id === number))
     user.findTrips(data[0].trips)
     user.addItineraries(data[1].destinations)
-    user.getUpcomingTrips();
     user.getTotalCost("2021");
-    user.getCurrentDate();
     displayData();
     displayName();
     tripId = data[0].trips.length + 1;
@@ -247,16 +249,6 @@ const getPrice = () => {
   tripPrice.innerText = `${total}`;
 }
 
-const formatDate = () => {
-  let splitDate = dateInput.value.split('');
-  splitDate.forEach((num, index) => {
-    if (num === '-') {
-      splitDate.splice(index, 1, "/");
-    }
-  })
-  return splitDate.join('');
-}
-
 const addData = () => {
   let selectedDestination = destinations.find(dest => {
     return dest.destination === destinationInput.value;
@@ -267,7 +259,7 @@ const addData = () => {
     userID: user.id, 
     destinationID: selectedDestination.id, 
     travelers: parseInt(travelersInput.value), 
-    date: formatDate(), 
+    date: user.date, 
     duration: parseInt(daysInput.value), 
     status: 'pending',
     suggestedActivities: []
@@ -281,7 +273,6 @@ const addData = () => {
     .then(data => {
       user.findTrips(data.trips)
       user.addItineraries(destinations)
-      user.getUpcomingTrips();
       user.getTotalCost("2021");
       clearDisplay();
       displayData();
@@ -319,7 +310,9 @@ bookButton.addEventListener('click', (event) => {
   event.preventDefault();
   let inputFields = [];
   inputs.forEach(input => inputFields.push(input))
-  if (inputFields.every(input => input.value)) {
+  if (checkDate()) {
+    return
+  } else if (inputFields.every(input => input.value)) {
     addData();
     formInputs.classList.add('hidden');
     mainPage.classList.remove('hidden');
@@ -363,17 +356,14 @@ showFormBtn.addEventListener('click', () => {
   newTripForm.classList.remove('hidden');
   mainPage.classList.add('hidden');
   setEventListeners();
-  dateInput.min = new Date().toJSON().slice(0, 10);
+  dateInput.min = user.date.split('/').join('-');
   locations = document.querySelectorAll(".select-destination");
 })
 
 dateInput.addEventListener('input',  () => {
-  if (dateInput.value < new Date().toJSON().slice(0, 10)) {
-    dateError.innerText = "Please select a valid date";
-    dateInput.value = new Date().toJSON().slice(0, 10);
-  } else {
+  if (dateInput.value >= user.date.split('/').join('-')) {
     dateError.innerText = "";
-  }
+  } 
 });
 
 daysInput.addEventListener('input',  () => {
