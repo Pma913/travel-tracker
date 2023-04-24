@@ -1,6 +1,4 @@
-/* body { */
-  /* background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%); */
-/* } */
+/* Universal Selectors */
 
 * {
    margin: 0;
@@ -15,23 +13,72 @@ html {
   background-color: rgba(60, 173, 120, 0.443);
 }
 
+.btn {
+  cursor: pointer;
+  color: black;
+  background-color: rgb(136 214 219);
+  height: 35px;
+  min-width: 90px;
+  border-radius: 5px;
+  transition: .3s
+}
+
+.btn:hover {
+  background-color:  rgb(85, 175, 182);
+  color: rgb(0, 0, 0);
+}
+
+
+
+/* Login page */
+
+.login {
+  background-color: rgba(60, 173, 120, 0.443);
+}
+
+.login-container,
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.form-input-field,
+.login-container {
+  width: 300px;
+  height: 300px;
+  border-bottom: solid 5px black;
+  border-radius: 20px;
+  background-color: rgb(255, 255, 255);
+}
+
+.trip-form,
+.login-form {
+  background-color:  rgba(60, 173, 120, 0.443);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 12px;
+  height: 90%;
+  width: 90%;
+}
+
+.login-button {
+  width: 90px;
+}
+
+/* Traveler Dash Board */
 header {
   display: flex;
   justify-content: space-between;
   margin: 5px 10px;
 }
 
-.book-trip {
-  margin-left: 10px;
-}
-
 .data-display {
   display: flex;
   flex-direction: column;
-}
-
-.agent-display {
-  position: relative;
 }
 
 .new-trip-requests,
@@ -69,74 +116,27 @@ header {
   top: 0;
 }
 
-.form-container {
-  width: 100%;
+.form-postioning-box {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  overflow: auto;
+  height: 100%;
+  margin-top: 200px;
 }
 
-.trip-form {
-  height: 200px;
+.form-input-field {
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 40%;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
 }
 
 .input-box {
   display: flex;
   justify-content: space-between;
-}
-
-.user-input {
-  width: 30%;
-}
-
-.login {
-  background-color: rgba(60, 173, 120, 0.443);
-}
-
-.login-container,
-.login {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.login-container {
-  width: 300px;
-  height: 300px;
-  border-bottom: solid 5px black;
-  border-radius: 20px;
-  background-color: rgb(255, 255, 255);
-}
-
-.login-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  border-radius: 12px;
-  height: 90%;
-  width: 90%;
-}
-
-.btn {
-  cursor: pointer;
-  color: black;
-  background-color: rgb(136 214 219);
-  height: 35px;
-  min-width: 90px;
-  border-radius: 5px;
-  transition: .3s
-}
-
-.btn:hover {
-  background-color:  rgb(85, 175, 182);
-  color: rgb(0, 0, 0);
-}
-
-.login-button {
-  width: 90px;
+  width: 100%;
+  margin: 3px;
 }
 
 .destination-display {
@@ -166,19 +166,12 @@ header {
   margin-top: 4%;
 }
 
-.dash-img-box.img {
-  height: 90%;
-  width: 90%;
-  border-radius: 5px;
-  object-fit: cover;
-  margin-top: 4%;
-}
-
 .image-section-heading {
   display: flex;
   height: 120px;
   flex-direction: column;
   justify-content: space-evenly;
+  align-items: center;
   margin-left: 10px;
 }
 
@@ -192,19 +185,9 @@ header {
   left: 25px;
 }
 
-.login-form,
-.destination-select {
-  background-color: rgba(60, 173, 120, 0.443);
-  overflow: auto;
-}
-
 .date-error,
 .error-message {
   color: red;
-}
-
-.hidden {
-  display: none;
 }
 
 .dash-img-box {
@@ -212,10 +195,9 @@ header {
   width: 350px;
   background-color: white;
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   align-content: center;
-  border-radius: 4px;
+  border-radius: 20px;
   position: relative;
   margin: 8px;
 }
@@ -235,7 +217,8 @@ header {
   position: absolute;
   top: 15px;
   left: 25px;
-  background: white;
+  background-color: rgb(136 214 219);
+  /* background: white; */
 }
 
 .pend-box {
@@ -249,6 +232,22 @@ header {
   border-radius: 20px;
 }
 
+
+/* Agent Display */
+.approval-button,
+.delete-button {
+  cursor: pointer;
+}
+
+.agentBtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
 .pend-labels,
 .button-box {
   display: flex;
@@ -260,18 +259,8 @@ header {
   justify-content: space-around;
 }
 
-.approval-button,
-.delete-button {
-  cursor: pointer;
-}
-
-
-.agentBtn {
-  background-color: #04AA6D;
-  color: white;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
+.agent-display {
+  position: relative;
 }
 
 .dropdown {
@@ -321,4 +310,9 @@ header {
 
 .client-trips-box h3 {
   padding-left: 15px;
+}
+
+/* Hidden Selector */
+.hidden {
+  display: none;
 }

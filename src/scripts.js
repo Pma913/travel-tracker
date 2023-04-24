@@ -81,9 +81,9 @@ const displayData = () => {
 const displayPast = () => {
   user.getPastTrips()
   user.past.forEach(trip => {
-    pastTrips.innerHTML += `<div height="250px" width="350px" class="dash-img-box">
+    pastTrips.innerHTML += `<div class="dash-img-box">
       <h4 class="dest-name">${trip.itinerary.destination}</h4>
-      <img height="90%" width="90%" src="${trip.itinerary.image}" alt="${trip.itinerary.alt} class="img">
+      <img src="${trip.itinerary.image}" alt="${trip.itinerary.alt}" class="img">
       </div>`;
   });
 }
@@ -91,9 +91,9 @@ const displayPast = () => {
 const displayUpcoming = () => {
   user.getApprovedTrips();
   user.approved.forEach(trip => {
-    approvedTrips.innerHTML += `<div height="250px" width="350px" class="dash-img-box">
+    approvedTrips.innerHTML += `<div class="dash-img-box">
     <h4 class="dest-name">${trip.itinerary.destination}</h4>
-    <img height="90%" width="90%" src="${trip.itinerary.image}" alt="${trip.itinerary.alt} class="img">
+    <img src="${trip.itinerary.image}" alt="${trip.itinerary.alt}" class="img">
     </div>`;
   });
 }
@@ -101,9 +101,9 @@ const displayUpcoming = () => {
 const displayPending = () => {
   user.getPendingTrips();
   user.pending.forEach(trip => {
-    pendingTrips.innerHTML += `<div height="250px" width="350px" class="dash-img-box">
+    pendingTrips.innerHTML += `<div class="dash-img-box">
     <h4 class="dest-name">${trip.itinerary.destination}</h4>
-    <img height="90%" width="90%" src="${trip.itinerary.image}" alt="${trip.itinerary.alt} class="img">
+    <img src="${trip.itinerary.image}" alt="${trip.itinerary.alt}" class="img">
     </div>`;
   })
 } 
