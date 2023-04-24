@@ -61,7 +61,7 @@ class User {
 
   getPendingTrips() {
     this.pending = this.tripData.filter(trip => trip.status === "pending");
-
+    
     if (!this.pending.length) {
       return "You have no upcoming trips."
     }
@@ -71,8 +71,12 @@ class User {
     this.approved = this.tripData.filter(trip => {
       if (trip.status === "approved" && trip.date >= this.date) {
         return true;
-      }
+      } 
     })
+
+    if (this.approved.length === 0) {
+      return "You have no upcoming trips.";
+    }
   }
 }
 
