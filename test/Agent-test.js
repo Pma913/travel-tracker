@@ -9,6 +9,8 @@ describe('Agent', () => {
   let agent;
   let pending;
   let theseTrips;
+  let places = destinations.destinations;
+  let people = travelers.travelers;
   const setTrip = () => {
     let todaysDate = new Date().toJSON().slice(0, 10);
     let formatedDate = todaysDate.split('-').join('/');
@@ -17,7 +19,7 @@ describe('Agent', () => {
   beforeEach(() => {
     theseTrips = trips.trips;
     
-    agent = new Agent(trips.trips, destinations.destinations, travelers.travelers);
+    agent = new Agent(theseTrips, places, people);
     pending = [{
       id: 6,
       userID: 2,
