@@ -44,7 +44,8 @@ const pastTrips = document.getElementById("pastTripsBox"),
       agentDisplay = document.getElementById("displaySections"),
       agentClientDisplay = document.getElementById("clientDisplay"),
       clientTrips = document.getElementById("clientTrips"),
-      tripTitle = document.getElementById("tripsTitle");
+      tripTitle = document.getElementById("tripsTitle"),
+      agentRtnBtn = document.getElementById("agentDisplayBtn");
 
 /* Global Variables */
 let user,
@@ -350,11 +351,19 @@ const setClientListener = () => {
       getClientData();
       agentDisplay.classList.add('hidden');
       agentClientDisplay.classList.remove('hidden');
+      agentRtnBtn.classList.remove('hidden');
       clientTrips.innerHTML = "";
       displayClientTrips();
     })
   });
 }
+
+agentRtnBtn.addEventListener('click', () => {
+  agentRtnBtn.classList.add('hidden');
+  agentDisplay.classList.remove('hidden');
+  agentClientDisplay.classList.add('hidden');
+  clientTrips.innerHTML = "";
+})
 
 const setButtonListener = () => {
   const approval = document.querySelectorAll(".approval-button")
