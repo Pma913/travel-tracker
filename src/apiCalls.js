@@ -1,17 +1,17 @@
 const fetchAPI = (url) => {
   return fetch(url)
-  .then(res => {
+    .then(res => {
       if (!res.ok) {
         throw (res)
       }
       return res.json()
     })
     .catch(err => {
-    console.log(err.statusText)
-    if (err.status > 400 && err.status < 500) {
-      alert("Server is missing!")
-    }
-  })
+      console.log(err.statusText)
+      if (err.status > 400 && err.status < 500) {
+        alert("Server is missing!")
+      }
+    })
 };
 
 const fetchAllData = () => {
@@ -23,19 +23,19 @@ const fetchAllData = () => {
 
 const fetchTravelers = () => {
   return fetch('http://localhost:3001/api/v1/travelers')
-  .then(res => {
-    if (!res.ok) {
-      throw (res)
-    }
-    return res.json()
-  })
-  .catch(err => {
-    console.log(err.statusText)
-    if (err.status > 400 && err.status < 500) {
-      alert("Server is missing!")
-    }
-  })
-}
+    .then(res => {
+      if (!res.ok) {
+        throw (res)
+      }
+      return res.json()
+    })
+    .catch(err => {
+      console.log(err.statusText)
+      if (err.status > 400 && err.status < 500) {
+        alert("Server is missing!")
+      }
+    })
+};
 
 const postTrip = (data) => {
   return fetch('http://localhost:3001/api/v1/trips', {
@@ -45,37 +45,37 @@ const postTrip = (data) => {
       'Content-Type': 'application/json'
     }
   })
-  .then(res => {
+    .then(res => {
       if (!res.ok) {
-        throw (err)
+        throw (res)
       }
       return res.json()
     })
     .catch(err => {
-    console.log(err.statusText)
-    if (err.status > 400 && err.status < 500) {
-      alert("Server is missing!")
-    }
-  })
+      console.log(err.statusText)
+      if (err.status > 400 && err.status < 500) {
+        alert("Server is missing!")
+      }
+    })
 };
 
 const fetchTrips = () => {
   return fetch('http://localhost:3001/api/v1/trips')
-  .then(res => {
-    if (!res.ok) {
-      throw (res)
-    }
-    return res.json()
-  })
-  .catch(err => {
-    console.log(err.statusText)
-    if (err.status > 400 && err.status < 500) {
-      alert("Server is missing!")
-    }
-  })
+    .then(res => {
+      if (!res.ok) {
+        throw (res)
+      }
+      return res.json()
+    })
+    .catch(err => {
+      console.log(err.statusText)
+      if (err.status > 400 && err.status < 500) {
+        alert("Server is missing!")
+      }
+    })
 }
 
-const updateTrip = (tripID ,data) => {
+const updateTrip = (tripID, data) => {
   return fetch(`http://localhost:3001/api/v1/trips/${tripID}`, {
     method: "DELETE",
     body: JSON.stringify(data),

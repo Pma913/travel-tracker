@@ -15,7 +15,6 @@ describe('User', () => {
   let userTrips;
   let allTrips;
   let travelLocations;
-  let userTravelLocations;
   let itinerary;
 
   beforeEach(() => {
@@ -26,10 +25,7 @@ describe('User', () => {
     userTrips = trips.trips.filter(trip => trip.userID === 1);
     allTrips = trips.trips;
     travelLocations = destinations.destinations;
-    userTravelLocations = travelLocations.filter(dest => {
-      return dest.id === 1 || dest.id === 3 || dest.id === 5;
-    });
-    itinerary = userItinerary.userItinerary
+    itinerary = userItinerary.userItinerary;
     user.findTrips(allTrips);
     user2.findTrips(allTrips);
     user.addItineraries(travelLocations);
