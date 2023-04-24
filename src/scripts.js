@@ -350,6 +350,7 @@ const setClientListener = () => {
       getClientData();
       agentDisplay.classList.add('hidden');
       agentClientDisplay.classList.remove('hidden');
+      clientTrips.innerHTML = "";
       displayClientTrips();
     })
   });
