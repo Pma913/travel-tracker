@@ -206,7 +206,7 @@ const setUserData = () => {
     user = new User(travelers.find(trav => trav.id === number));
     user.findTrips(data[0].trips);
     user.addItineraries(data[1].destinations);
-    user.getTotalCost("2021");
+    user.getTotalCost();
     displayData();
     displayName();
     destinations = data[1].destinations;
@@ -275,7 +275,7 @@ const addData = () => {
     .then(data => {
       user.findTrips(data.trips)
       user.addItineraries(destinations)
-      user.getTotalCost("2021");
+      user.getTotalCost();
       clearDisplay();
       displayData();
     })
