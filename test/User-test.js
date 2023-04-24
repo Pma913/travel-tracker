@@ -88,14 +88,15 @@ describe('User', () => {
   });
 
   it('should hava a method to retrieve upcoming trips', () => {
-    let upcoming = allTrips[5];
-    upcoming.itinerary = travelLocations[5];
-    user2.getUpcomingTrips();
-    expect(user2.upcomingDestinations).to.deep.equal([upcoming])
+    let upcoming = allTrips[3];
+    
+    upcoming.itinerary = travelLocations[3];
+    user2.getApprovedTrips();
+    expect(user2.approved).to.deep.equal([upcoming])
   });
 
   it('should return an error if there are no upcoming trips', () => {
-    expect(user.getUpcomingTrips()).to.equal("You have no upcoming trips.")
+    expect(user.getApprovedTrips()).to.equal("You have no upcoming trips.")
   });
 
 });
