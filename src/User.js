@@ -37,9 +37,9 @@ class User {
 
   getTotalCost() {
     let splitDate = this.date.split('/');
-    let oneYearAgo = splitDate.splice(0,1,splitDate[0] - 1).join('/');
-    let tripsThisLastYear = this.tripData.filter(trip => trip.date >= oneYearAgo)
-    let sumOfTrips = tripsThisLastYear.reduce((acc, trip) => {
+    let oneYearAgo = splitDate.splice(0, 1, splitDate[0] - 1).join('/');
+    let tripsLastYear = this.tripData.filter(trip => trip.date >= oneYearAgo)
+    let sumOfTrips = tripsLastYear.reduce((acc, trip) => {
       let tripDay = trip.itinerary.estimatedLodgingCostPerDay * trip.duration;
       let tripFlight = trip.itinerary.estimatedFlightCostPerPerson * trip.travelers;
       acc += (tripDay + tripFlight)

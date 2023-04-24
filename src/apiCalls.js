@@ -75,7 +75,7 @@ const fetchTrips = () => {
   })
 }
 
-const updateTrip = (tripID ,data) => {
+const updateTrip = (tripID, data) => {
   return fetch(`http://localhost:3001/api/v1/trips/${tripID}`, {
     method: "DELETE",
     body: JSON.stringify(data),
