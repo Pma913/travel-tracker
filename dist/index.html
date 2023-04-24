@@ -32,12 +32,16 @@
     </header>
     <main id="main">
       <div id="dataDisplay" class="data-display">
-        <section id="pastTripsSection" class="past-trips-section data-d">
+        <section id="cost" class="cost">
+          <h3 id="costTitle" class="display-label">Total Cost</h3>
+          <h4 id="displayPrice" class="display-label"></h4>
+        </section>
+        <section id="pastTripsSection" style="overflow-y:scroll;" class="past-trips-section data-d">
           <h3 id="pastTrips" class="display-label">Past Trips</h3>
           <div id="pastTripsBox" class="past-trips-box"></div>
           <!-- Add content here for past trips -->
         </section>
-        <section id="pendingTripsSection" class="pending-trips-section data-d">
+        <section id="pendingTripsSection" style="overflow-y:scroll;" class="pending-trips-section data-d">
           <h3 id="pendingTrips" class="display-label">Pending Trips</h3>
           <div id="pendingTripsBox" class="pending-trips-box"></div>
           <!-- Add content here for pending trips -->
@@ -46,10 +50,6 @@
           <h3 id="approvedTrips" class="display-label">Approved Trips</h3>
           <div id="approvedTripsBox" class="approved-trips-box"></div>
           <!-- Add content here for approved trips -->
-        </section>
-        <section id="cost" class="cost">
-          <h3 id="costTitle" class="display-label">Total Cost</h3>
-          <h4 id="displayPrice" class="display-label"></h4>
         </section>
       </div>
       <button id="bookTrip" class="book-trip btn">Let's book a trip!</h2>

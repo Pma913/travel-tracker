@@ -41,6 +41,10 @@ header {
   width: 100%;
 }
 
+.cost {
+  height: 50px;
+}
+
 .approved-trips-box,
 .past-trips-box,
 .pending-trips-box {
