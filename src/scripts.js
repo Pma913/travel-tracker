@@ -139,6 +139,7 @@ const displayAgentPage = () => {
     </div>
     </div>`
   })
+  todaysTrips.innerHTML = `<p>There are currently ${agent.todaysTrips.length} trips in progress today.</p>`
 }
 
 /* Data manipulators */
