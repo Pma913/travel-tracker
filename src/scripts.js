@@ -37,12 +37,13 @@ const pastTrips = document.getElementById("pastTripsBox"),
       locationSearch = document.getElementById("locationSearch"),
       formIncomplete = document.getElementById("errorMessage"),
       agentPage = document.getElementById("agentPage"),
-      pendingTripsBox = document.getElementById("pendingTripsDisplay");
+      pendingTripsBox = document.getElementById("pendingTripsDisplay"),
+      agentPrice = document.getElementById("agentTotalIncome"),
+      todaysTrips = document.getElementById("todaysTripsDisplay");
 
 /* Global Variables */
 let user,
     agent,
-    tripId,
     destinations,
     travelers,
     number,
@@ -67,6 +68,7 @@ const displayDestinations = () => {
 const displayData = () => {
   displayPast();
   displayUpcoming();
+  displayPending();
   displayYearCost();
 }
 
@@ -81,10 +83,6 @@ const displayPast = () => {
 }
 
 const displayUpcoming = () => {
-  if (!user.approved.length) {
-    pendingTrips.innerHTML += `<h4>You have no approved trips coming up</h4>`;
-  }
-
   user.getApprovedTrips();
   user.approved.forEach(trip => {
     approvedTrips.innerHTML += `<div height="250px" width="350px" class="dash-img-box">
@@ -95,7 +93,7 @@ const displayUpcoming = () => {
 }
 
 const displayPending = () => {
-  user.getPending();
+  user.getPendingTrips();
   user.pending.forEach(trip => {
     pendingTrips.innerHTML += `<div height="250px" width="350px" class="dash-img-box">
     <h4 class="dest-name">${trip.itinerary.destination}</h4>
@@ -105,16 +103,17 @@ const displayPending = () => {
 } 
 
 const displayYearCost = () => {
-  totalCost.innerText = `$${user.totalCost}`
+  totalCost.innerText = `$${user.totalCost}`;
 }
 
 const displayName = () => {
-  displayUser.innerText = ` ${user.name}`
+  displayUser.innerText = ` ${user.name}`;
 }
 
 const clearDisplay = () => {
   pastTrips.innerHTML = ``;
   pendingTrips.innerHTML = ``;
+  approvedTrips.innerHTML = ``;
   totalCost.innerText = ``;
 }
 
@@ -123,30 +122,39 @@ const clearAgentDisplay = () => {
 }
 
 const displayAgentPage = () => {
-
+  agentPrice.innerText = Math.floor(agent.totalIncome);
   agent.newTrips.forEach(trip => {
     const location = agent.locations.find(loc => loc.id === trip.destinationID)
     let user = travelers.find(pers => pers.id === trip.userID)
     pendingTripsBox.innerHTML += `<div class="pend-box">
-    <h3>location: ${location.destination}</h3>
-    <h3>Client:</h3><p> ${user.name}</p>
-    <h3>Date: ${trip.date}</h3>
-    <h3>Number of Travelers: ${trip.travelers}</h3>
-    <h3>Duration: ${trip.duration} days</h3>
-    <h3>trip id: ${trip.id}</h3>
+    <div class="pend-labels"><h3>location:&nbsp;</h3><p> ${location.destination}</p></div>
+    <div class="pend-labels"><h3>Client:&nbsp;</h3><p> ${user.name}</p></div>
+    <div class="pend-labels"><h3>Date:&nbsp;</h3><p> ${trip.date}</p></div>
+    <div class="pend-labels"><h3>Number of Travelers:&nbsp;</h3><p> ${trip.travelers}</p></div>
+    <div class="pend-labels"><h3>Duration:&nbsp;</h3><p> ${trip.duration} days</p></div>
+    <div class="pend-labels"><h3>trip id:&nbsp;</h3><p> ${trip.id}</p></div>
+    <div class="button-box">
     <button name=${trip.id} class="approval-button" id="approveBtn">Approve</button>
     <button name=${trip.id} class="delete-button" id="deleteBtn">Revoke</button>
+    </div>
     </div>`
   })
 }
 
 /* Data manipulators */
+const checkDate = () => {
+  if (dateInput.value < user.date.split('/').join('-')) {
+    dateError.innerText = "Please select a valid date";
+    return true;
+  } 
+}
+
 const approveTrip = (tripNum) => {
   let tripToApprove = agent.locateTrip(parseInt(tripNum))
   tripToApprove.status = "approved";
-  deleteTrip(tripNum, tripToApprove);
+  tripToApprove.id = Date.now();
+  deleteTrip(tripNum, agent.locateTrip(parseInt(tripNum)));
   postTrip(tripToApprove)
-  .then(res => console.log('PUT message:', res.message))
 }
 
 const deleteTrip = (tripNum) => {
@@ -157,8 +165,8 @@ const deleteTrip = (tripNum) => {
     clearAgentDisplay();
     setAgentData();
   })
-  console.log("heres the trip: ",trip)
 }
+
 const setAgentData = () => {
   fetchAllData()
   .then(data => {
@@ -195,24 +203,20 @@ const setEventListeners = () => {
 const setUserData = () => {
   fetchAllData()
   .then(data => {
-    user = new User(travelers.find(trav => trav.id === number))
-    user.findTrips(data[0].trips)
-    user.addItineraries(data[1].destinations)
-    user.getUpcomingTrips();
-    user.getTotalCost("2021");
-    user.getCurrentDate();
+    user = new User(travelers.find(trav => trav.id === number));
+    user.findTrips(data[0].trips);
+    user.addItineraries(data[1].destinations);
+    user.getTotalCost();
     displayData();
     displayName();
-    tripId = data[0].trips.length + 1;
     destinations = data[1].destinations;
     displayDestinations();
-    console.log('user trips!: ', user.tripData)
   })
 };
 
 const checkUsername = () => {
-  let login = userName.value
-  let splitLogin = login.split('')
+  let login = userName.value;
+  let splitLogin = login.split('');
   let letters = [];
   let numbers = [];
 
@@ -224,9 +228,9 @@ const checkUsername = () => {
     }
   })
 
-  let word = letters.join('')
-  number = parseInt(numbers.join(''))
-  let travelerIds = travelers.map(trav => trav.id)
+  let word = letters.join('');
+  number = parseInt(numbers.join(''));
+  let travelerIds = travelers.map(trav => trav.id);
   if (word === "traveler" && travelerIds.includes(number)) {
     return true;
   }
@@ -247,27 +251,17 @@ const getPrice = () => {
   tripPrice.innerText = `${total}`;
 }
 
-const formatDate = () => {
-  let splitDate = dateInput.value.split('');
-  splitDate.forEach((num, index) => {
-    if (num === '-') {
-      splitDate.splice(index, 1, "/");
-    }
-  })
-  return splitDate.join('');
-}
-
 const addData = () => {
   let selectedDestination = destinations.find(dest => {
     return dest.destination === destinationInput.value;
   });
 
   let tripData = {
-    id: tripId, 
+    id: Date.now(), 
     userID: user.id, 
     destinationID: selectedDestination.id, 
     travelers: parseInt(travelersInput.value), 
-    date: formatDate(), 
+    date: user.date, 
     duration: parseInt(daysInput.value), 
     status: 'pending',
     suggestedActivities: []
@@ -281,11 +275,9 @@ const addData = () => {
     .then(data => {
       user.findTrips(data.trips)
       user.addItineraries(destinations)
-      user.getUpcomingTrips();
-      user.getTotalCost("2021");
+      user.getTotalCost();
       clearDisplay();
       displayData();
-      tripId = data.trips.length + 1;
     })
   })
 };
@@ -319,7 +311,9 @@ bookButton.addEventListener('click', (event) => {
   event.preventDefault();
   let inputFields = [];
   inputs.forEach(input => inputFields.push(input))
-  if (inputFields.every(input => input.value)) {
+  if (checkDate()) {
+    return
+  } else if (inputFields.every(input => input.value)) {
     addData();
     formInputs.classList.add('hidden');
     mainPage.classList.remove('hidden');
@@ -363,17 +357,14 @@ showFormBtn.addEventListener('click', () => {
   newTripForm.classList.remove('hidden');
   mainPage.classList.add('hidden');
   setEventListeners();
-  dateInput.min = new Date().toJSON().slice(0, 10);
+  dateInput.min = user.date.split('/').join('-');
   locations = document.querySelectorAll(".select-destination");
 })
 
 dateInput.addEventListener('input',  () => {
-  if (dateInput.value < new Date().toJSON().slice(0, 10)) {
-    dateError.innerText = "Please select a valid date";
-    dateInput.value = new Date().toJSON().slice(0, 10);
-  } else {
+  if (dateInput.value >= user.date.split('/').join('-')) {
     dateError.innerText = "";
-  }
+  } 
 });
 
 daysInput.addEventListener('input',  () => {

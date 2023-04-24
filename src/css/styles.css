@@ -30,26 +30,28 @@ header {
   flex-direction: column;
 }
 
-.data-d {
-  height: 400px;
-  width: 100%;
-}
-
-.past-trips-section,
-.pending-trips-section,
+.data-d,
 .cost {
   margin-top: 40px;
-  height: 285px;
   display: flex;
   flex-direction: column;
   max-width: 100vw;
-  align-items: center;
+  align-items: flex-start;
+  height: 290px;
+  width: 100%;
 }
 
+.approved-trips-box,
 .past-trips-box,
 .pending-trips-box {
   display: flex;
-  overflow-x: auto;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  height: 285px;
+}
+
+.display-label {
+  margin: 0 0 10px 10px;
 }
 
 .form-container {
@@ -139,13 +141,6 @@ header {
   border-bottom: solid 5px black;
   position: relative;
   margin-top: 14px;
-  transition: .4s .4s;
-}
-
-.img-box:hover {
-  cursor: pointer;
-  border-bottom: 0;
-  border-left: 0;
 }
 
 .img {
@@ -185,9 +180,11 @@ header {
 .login-form,
 .destination-select {
   background-color: rgba(60, 173, 120, 0.443);
+  overflow: auto;
 }
 
-.date-error {
+.date-error,
+.error-message {
   color: red;
 }
 
@@ -203,7 +200,7 @@ header {
   flex-wrap: wrap;
   justify-content: center;
   align-content: center;
-  border-radius: 20px;
+  border-radius: 4px;
   position: relative;
   margin: 8px;
 }
@@ -215,7 +212,6 @@ header {
   border-radius: 12px;
   object-fit: cover;
   margin-top: 4%;
-  /* position: absolute; */
   top: 0;
   left: 0;
 }
@@ -232,7 +228,24 @@ header {
   margin: 5px;
   display: flex;
   flex-direction: column;
-  width: 216px;
-  height: 200px;
+  width: 245px;
+  height: 245px;
   justify-content: space-around;
+  border-radius: 20px;
+}
+
+.pend-labels,
+.button-box {
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+
+.button-box {
+  justify-content: space-around;
+}
+
+.approval-button,
+.delete-button {
+  cursor: pointer;
 }

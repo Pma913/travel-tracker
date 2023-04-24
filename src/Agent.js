@@ -41,7 +41,6 @@ class Agent {
 
   findUser(userName) {
     this.client = this.users.find(user => user.name === userName)
-    console.log(this.client)
   }
 }
 

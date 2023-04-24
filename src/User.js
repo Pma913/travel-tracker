@@ -8,7 +8,7 @@ class User {
     this.past = [];
     this.pending = [];
     this.approved = [];
-    this.date;  
+    this.date = new Date().toJSON().slice(0, 10).split('-').join('/');  
   }
 
   findTrips(trips) {
@@ -35,9 +35,11 @@ class User {
     
   }
 
-  getTotalCost(year) {
-    let tripsThisYear = this.tripData.filter(trip => trip.date.includes(year))
-    let sumOfTrips = tripsThisYear.reduce((acc, trip) => {
+  getTotalCost() {
+    let splitDate = this.date.split('/');
+    let oneYearAgo = splitDate.splice(0,1,splitDate[0] - 1).join('/');
+    let tripsThisLastYear = this.tripData.filter(trip => trip.date >= oneYearAgo)
+    let sumOfTrips = tripsThisLastYear.reduce((acc, trip) => {
       let tripDay = trip.itinerary.estimatedLodgingCostPerDay * trip.duration;
       let tripFlight = trip.itinerary.estimatedFlightCostPerPerson * trip.travelers;
       acc += (tripDay + tripFlight)
@@ -52,51 +54,23 @@ class User {
   }
 
   getPastTrips() {
-    this.getCurrentDate()
-    this.tripData.forEach(trip => {
-      if (trip.date < this.date) {
-        this.past.push(trip)
-      }
-    })
-  }
-
-  getUpcomingTrips() {
-    this.getCurrentDate()
-    this.upcomingDestinations = this.tripData.filter(trip => trip.date > this.date);
-
-    if (!this.upcomingDestinations.length) {
-      return "You have no upcoming trips."
-    }
+    this.past = this.tripData.filter(trip => trip.date < this.date && trip.status === "approved");
   }
 
   getPendingTrips() {
-    this.getCurrentDate()
     this.pending = this.tripData.filter(trip => trip.status === "pending");
-
-    if (!this.upcomingDestinations.length) {
+    
+    if (!this.pending.length) {
       return "You have no upcoming trips."
     }
   }
 
   getApprovedTrips() {
-    this.getCurrentDate()
-    this.tripData.forEach(trip => {
-      if (trip.status === "approved" && trip.date >= this.date) {
-        this.approved.push(trip)
-      }
-    })
-  }
+    this.approved = this.tripData.filter(trip => trip.status === "approved" && trip.date >= this.date);
 
-  getCurrentDate() {
-    let currentDate = new Date().toJSON().slice(0, 10);
-    let splitDate = currentDate.split('')
-    splitDate.forEach((num, index) => {
-      if (num === '-') {
-        splitDate.splice(index, 1, '/')
-      }
-    }) 
-    
-    this.date = splitDate.join('')
+    if (this.approved.length === 0) {
+      return "You have no upcoming trips.";
+    }
   }
 }
 

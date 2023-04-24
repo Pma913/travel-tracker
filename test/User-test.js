@@ -77,25 +77,24 @@ describe('User', () => {
   });
 
   it('should hava a method to retrieve total cost', () => {
-    user.getTotalCost("2022");
-    expect(user.totalCost).to.equal(12782);
-    user2.getTotalCost("2022");
-    expect(user2.totalCost).to.equal(6270)
+    user2.getTotalCost();
+    expect(user2.totalCost).to.equal(5115)
   })
 
   it('should hava return error if no trips have been taken', () => {
-    expect(user.getTotalCost("2023", travelLocations)).to.equal("You have not taken any trips yet this year.");
+    expect(user.getTotalCost()).to.equal("You have not taken any trips yet this year.");
   });
 
   it('should hava a method to retrieve upcoming trips', () => {
-    let upcoming = allTrips[5];
-    upcoming.itinerary = travelLocations[5];
-    user2.getUpcomingTrips();
-    expect(user2.upcomingDestinations).to.deep.equal([upcoming])
+    let upcoming = allTrips[3];
+    
+    upcoming.itinerary = travelLocations[3];
+    user2.getApprovedTrips();
+    expect(user2.approved).to.deep.equal([upcoming])
   });
 
   it('should return an error if there are no upcoming trips', () => {
-    expect(user.getUpcomingTrips()).to.equal("You have no upcoming trips.")
+    expect(user.getApprovedTrips()).to.equal("You have no upcoming trips.")
   });
 
 });
