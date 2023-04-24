@@ -265,7 +265,8 @@ header {
   cursor: pointer;
 }
 
-.dropbtn {
+
+.agentBtn {
   background-color: #04AA6D;
   color: white;
   padding: 16px;
@@ -306,6 +307,18 @@ header {
   display: block;
 }
 
+.agentBtn:hover,
 .dropdown:hover .dropbtn {
   background-color: #3e8e41;
+}
+
+.client-trips-box {
+  background-color: chocolate;
+    width: 40%;
+    border-radius: 20px;
+    margin: 10px;
+}
+
+.client-trips-box h3 {
+  padding-left: 15px;
 }
