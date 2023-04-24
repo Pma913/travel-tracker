@@ -137,9 +137,13 @@ const displayAgentPage = () => {
     <button name=${trip.id} class="approval-button" id="approveBtn">Approve</button>
     <button name=${trip.id} class="delete-button" id="deleteBtn">Revoke</button>
     </div>
-    </div>`
+    </div>`;
   })
-  todaysTrips.innerHTML = `<p>There are currently ${agent.todaysTrips.length} trips in progress today.</p>`
+  if (agent.todaysTrips.length === 1) {
+    todaysTrips.innerHTML = `<p>There is currently 1 trip in progress today.</p>`;
+  } else {
+    todaysTrips.innerHTML = `<p>There are currently ${agent.todaysTrips.length} trips in progress today.</p>`;
+  }
 }
 
 /* Data manipulators */
@@ -171,7 +175,7 @@ const deleteTrip = (tripNum) => {
 const setAgentData = () => {
   fetchAllData()
   .then(data => {
-    agent = new Agent(data[0].trips, data[1].destinations, travelers)
+    agent = new Agent(data[0].trips, data[1].destinations, travelers);
     agent.getTodaysTrips();
     agent.getTotalIncome();
     agent.getTripRequests();
@@ -270,12 +274,12 @@ const addData = () => {
 
   postTrip(tripData)
   .then(data => {
-    console.log('post data: ',data)
+    console.log('post data: ',data);
     
     fetchTrips()
     .then(data => {
-      user.findTrips(data.trips)
-      user.addItineraries(destinations)
+      user.findTrips(data.trips);
+      user.addItineraries(destinations);
       user.getTotalCost();
       clearDisplay();
       displayData();
@@ -311,7 +315,7 @@ window.addEventListener('load', () => {
 bookButton.addEventListener('click', (event) => {
   event.preventDefault();
   let inputFields = [];
-  inputs.forEach(input => inputFields.push(input))
+  inputs.forEach(input => inputFields.push(input));
   if (checkDate()) {
     return
   } else if (inputFields.every(input => input.value)) {
