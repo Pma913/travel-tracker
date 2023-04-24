@@ -30,6 +30,11 @@ header {
   flex-direction: column;
 }
 
+.agent-display {
+  position: relative;
+}
+
+.new-trip-requests,
 .data-d,
 .cost {
   margin-top: 40px;
@@ -45,6 +50,7 @@ header {
   height: 50px;
 }
 
+.pending-trips-display,
 .approved-trips-box,
 .past-trips-box,
 .pending-trips-box {
@@ -56,6 +62,11 @@ header {
 
 .display-label {
   margin: 0 0 10px 10px;
+}
+
+.pend-label {
+  position: absolute;
+  top: 0;
 }
 
 .form-container {
@@ -229,7 +240,7 @@ header {
 
 .pend-box {
   background-color: white;
-  margin: 5px;
+  margin: 35px 8px 5px;
   display: flex;
   flex-direction: column;
   width: 245px;
