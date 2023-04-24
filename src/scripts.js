@@ -39,7 +39,8 @@ const pastTrips = document.getElementById("pastTripsBox"),
       agentPage = document.getElementById("agentPage"),
       pendingTripsBox = document.getElementById("pendingTripsDisplay"),
       agentPrice = document.getElementById("agentTotalIncome"),
-      todaysTrips = document.getElementById("todaysTripsDisplay");
+      todaysTrips = document.getElementById("todaysTripsDisplay"),
+      clientDropDown = document.getElementById("clientDropDown");
 
 /* Global Variables */
 let user,
@@ -122,6 +123,7 @@ const clearAgentDisplay = () => {
 }
 
 const displayAgentPage = () => {
+  setClientDrop();
   agentPrice.innerText = Math.floor(agent.totalIncome);
   agent.newTrips.forEach(trip => {
     const location = agent.locations.find(loc => loc.id === trip.destinationID)
@@ -145,6 +147,14 @@ const displayAgentPage = () => {
     todaysTrips.innerHTML = `<p>There are currently ${agent.todaysTrips.length} trips in progress today.</p>`;
   }
 }
+
+const setClientDrop = () => {
+  travelers.forEach(traveler => {
+    clientDropDown.innerHTML += `<p class="client-name">${traveler.name}</p>`
+  })
+}
+
+
 
 /* Data manipulators */
 const checkDate = () => {
