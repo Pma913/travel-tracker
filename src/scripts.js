@@ -187,8 +187,8 @@ const setAgentData = () => {
   .then(data => {
     agent = new Agent(data[0].trips, data[1].destinations, travelers);
     agent.getTodaysTrips();
-    agent.getTotalIncome();
-    agent.getTripRequests();
+    agent.getTotalIncome(agent.trips);
+    agent.getTripRequests(agent.trips);
     displayAgentPage();
     setButtonListener();
   })
@@ -297,15 +297,22 @@ const addData = () => {
   })
 };
 
+const getClientData = () => {
+    user.findTrips(agent.trips);
+    user.addItineraries(agent.locations);
+    user.getTotalCost();
+}
+
 /* Event Listeners */
 const setClientListener = () => {
   const clients = document.querySelectorAll(".client-name")
 
   clients.forEach(client => {
     client.addEventListener('click', (target) => {
-      const name = target.srcElement.innerText
-      number = travelers.find(person => person.name === name).id
-      setUserData();
+      agent.findUser(target.srcElement.innerText);
+      user = new User(agent.client);
+      getClientData();
+      console.log("selected client:" ,user)
     })
   });
 }
