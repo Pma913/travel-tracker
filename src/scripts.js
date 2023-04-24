@@ -123,7 +123,7 @@ const clearAgentDisplay = () => {
 }
 
 const displayAgentPage = () => {
-  setClientDrop();
+  setClientListener();
   agentPrice.innerText = Math.floor(agent.totalIncome);
   agent.newTrips.forEach(trip => {
     const location = agent.locations.find(loc => loc.id === trip.destinationID)
@@ -298,6 +298,18 @@ const addData = () => {
 };
 
 /* Event Listeners */
+const setClientListener = () => {
+  const clients = document.querySelectorAll(".client-name")
+
+  clients.forEach(client => {
+    client.addEventListener('click', (target) => {
+      const name = target.srcElement.innerText
+      number = travelers.find(person => person.name === name).id
+      setUserData();
+    })
+  });
+}
+
 const setButtonListener = () => {
   const approval = document.querySelectorAll(".approval-button")
   const denial = document.querySelectorAll(".delete-button")
@@ -319,6 +331,7 @@ window.addEventListener('load', () => {
   fetchTravelers()
   .then(data => {
     travelers = data.travelers;
+    setClientDrop();
   })
 });
 
