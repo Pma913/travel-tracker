@@ -12,48 +12,48 @@ import { updateTrip } from './apiCalls';
 
 /* Query Selectors */
 const pastTrips = document.getElementById("pastTripsBox"),
-      pendingTrips = document.getElementById("pendingTripsBox"),
-      approvedTrips = document.getElementById("approvedTripsBox"),
-      totalCost = document.getElementById("displayPrice"),
-      userName = document.getElementById("username"),
-      displayUser = document.getElementById("usernameDisplay"),
-      dateInput = document.getElementById("date"),
-      daysInput = document.getElementById("numberOfDays"),
-      travelersInput = document.getElementById("numberOfTravelers"),
-      destinationInput = document.getElementById("destination"),
-      bookButton = document.getElementById("userInputBtn"),
-      tripPrice = document.getElementById("newTripPrice"),
-      inputs = document.querySelectorAll(".data-input"),
-      loginBtn = document.getElementById("loginBtn"),
-      password = document.getElementById("password"),
-      loginPage = document.getElementById("loginBody"),
-      mainPage = document.getElementById("mainPage"),
-      destinationDisplay = document.getElementById("destinationDisplay"),
-      showFormBtn = document.getElementById("bookTrip"),
-      newTripForm = document.getElementById("newTripFormContainer"),
-      formInputs = document.getElementById("formInputField"),
-      destinationHeader = document.getElementById("destSelect"),
-      dateError = document.getElementById("dateError"),
-      locationSearch = document.getElementById("locationSearch"),
-      formIncomplete = document.getElementById("errorMessage"),
-      agentPage = document.getElementById("agentPage"),
-      pendingTripsBox = document.getElementById("pendingTripsDisplay"),
-      agentPrice = document.getElementById("agentTotalIncome"),
-      todaysTrips = document.getElementById("todaysTripsDisplay"),
-      clientDropDown = document.getElementById("clientDropDown"),
-      agentDisplay = document.getElementById("displaySections"),
-      agentClientDisplay = document.getElementById("clientDisplay"),
-      clientTrips = document.getElementById("clientTrips"),
-      tripTitle = document.getElementById("tripsTitle"),
-      agentRtnBtn = document.getElementById("agentDisplayBtn");
+  pendingTrips = document.getElementById("pendingTripsBox"),
+  approvedTrips = document.getElementById("approvedTripsBox"),
+  totalCost = document.getElementById("displayPrice"),
+  userName = document.getElementById("username"),
+  displayUser = document.getElementById("usernameDisplay"),
+  dateInput = document.getElementById("date"),
+  daysInput = document.getElementById("numberOfDays"),
+  travelersInput = document.getElementById("numberOfTravelers"),
+  destinationInput = document.getElementById("destination"),
+  bookButton = document.getElementById("userInputBtn"),
+  tripPrice = document.getElementById("newTripPrice"),
+  inputs = document.querySelectorAll(".data-input"),
+  loginBtn = document.getElementById("loginBtn"),
+  password = document.getElementById("password"),
+  loginPage = document.getElementById("loginBody"),
+  mainPage = document.getElementById("mainPage"),
+  destinationDisplay = document.getElementById("destinationDisplay"),
+  showFormBtn = document.getElementById("bookTrip"),
+  newTripForm = document.getElementById("newTripFormContainer"),
+  formInputs = document.getElementById("formInputField"),
+  destinationHeader = document.getElementById("destSelect"),
+  dateError = document.getElementById("dateError"),
+  locationSearch = document.getElementById("locationSearch"),
+  formIncomplete = document.getElementById("errorMessage"),
+  agentPage = document.getElementById("agentPage"),
+  pendingTripsBox = document.getElementById("pendingTripsDisplay"),
+  agentPrice = document.getElementById("agentTotalIncome"),
+  todaysTrips = document.getElementById("todaysTripsDisplay"),
+  clientDropDown = document.getElementById("clientDropDown"),
+  agentDisplay = document.getElementById("displaySections"),
+  agentClientDisplay = document.getElementById("clientDisplay"),
+  clientTrips = document.getElementById("clientTrips"),
+  tripTitle = document.getElementById("tripsTitle"),
+  agentRtnBtn = document.getElementById("agentDisplayBtn");
 
 /* Global Variables */
 let user,
-    agent,
-    destinations,
-    travelers,
-    number,
-    locations; 
+  agent,
+  destinations,
+  travelers,
+  number,
+  locations; 
 
 /* DOM manipulation */
 const resetDestinationDisplay = () => {
@@ -210,25 +210,25 @@ const approveTrip = (tripNum) => {
 const deleteTrip = (tripNum) => {
   let trip = agent.locateTrip(parseInt(tripNum))
   updateTrip(tripNum, trip)
-  .then(res => {
-    console.log('delete message:', res.message)
-    clearAgentDisplay();
-    setAgentData();
-    removeTripFromAgent(tripNum);
-  })
+    .then(res => {
+      console.log('delete message:', res.message)
+      clearAgentDisplay();
+      setAgentData();
+      removeTripFromAgent(tripNum);
+    })
 }
 
 const setAgentData = () => {
   fetchAllData()
-  .then(data => {
-    agent = new Agent(data[0].trips, data[1].destinations, travelers);
-    agent.getTodaysTrips();
-    agent.getTotalIncome(agent.trips);
-    agent.getTripRequests(agent.trips);
-    displayAgentPage(agent.newTrips);
-    setButtonListener();
-    console.log(agent)
-  })
+    .then(data => {
+      agent = new Agent(data[0].trips, data[1].destinations, travelers);
+      agent.getTodaysTrips();
+      agent.getTotalIncome(agent.trips);
+      agent.getTripRequests(agent.trips);
+      displayAgentPage(agent.newTrips);
+      setButtonListener();
+      console.log(agent)
+    })
 }
 
 const clearInputs = () => {
@@ -240,16 +240,16 @@ const clearInputs = () => {
 
 const setUserData = () => {
   fetchAllData()
-  .then(data => {
-    user = new User(travelers.find(trav => trav.id === number));
-    user.findTrips(data[0].trips);
-    user.addItineraries(data[1].destinations);
-    user.getTotalCost();
-    displayData();
-    displayName();
-    destinations = data[1].destinations;
-    displayDestinations();
-  })
+    .then(data => {
+      user = new User(travelers.find(trav => trav.id === number));
+      user.findTrips(data[0].trips);
+      user.addItineraries(data[1].destinations);
+      user.getTotalCost();
+      displayData();
+      displayName();
+      destinations = data[1].destinations;
+      displayDestinations();
+    })
 };
 
 const checkUsername = () => {
@@ -306,24 +306,24 @@ const addData = () => {
   }
 
   postTrip(tripData)
-  .then(data => {
-    console.log('post data: ',data);
-    
-    fetchTrips()
     .then(data => {
-      user.findTrips(data.trips);
-      user.addItineraries(destinations);
-      user.getTotalCost();
-      clearDisplay();
-      displayData();
+      console.log('post data: ', data);
+    
+      fetchTrips()
+        .then(data => {
+          user.findTrips(data.trips);
+          user.addItineraries(destinations);
+          user.getTotalCost();
+          clearDisplay();
+          displayData();
+        })
     })
-  })
 };
 
 const getClientData = () => {
-    user.findTrips(agent.trips);
-    user.addItineraries(agent.locations);
-    user.getTotalCost();
+  user.findTrips(agent.trips);
+  user.addItineraries(agent.locations);
+  user.getTotalCost();
 }
 
 /* Event Listeners */
@@ -371,23 +371,23 @@ const setButtonListener = () => {
 
   approval.forEach(aprv => {
     aprv.addEventListener('click', (target) => {
-    approveTrip(target.target.name)
+      approveTrip(target.target.name)
     })
   })
 
   denial.forEach(den =>{
     den.addEventListener('click', (target) => {
-    deleteTrip(target.target.name)
+      deleteTrip(target.target.name)
     })
   })
 }
 
 window.addEventListener('load', () => {
   fetchTravelers()
-  .then(data => {
-    travelers = data.travelers;
-    setClientDrop();
-  })
+    .then(data => {
+      travelers = data.travelers;
+      setClientDrop();
+    })
 });
 
 bookButton.addEventListener('click', (event) => {

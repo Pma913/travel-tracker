@@ -4,16 +4,13 @@ import Agent from '../src/Agent.js';
 import trips from '../data/trips-test-data.js';
 import travelers from '../data/user-test-data.js';
 import destinations from '../data/destination-test-data.js';
-import userItinerary from '../data/combined-travel-data.js';
-import User from '../src/User.js';
 
 describe('Agent', () => {
   let agent;
-  let user;
   let pending;
   let theseTrips;
   const setTrip = () => {
-    let todaysDate = new Date().toJSON().slice(0,10);
+    let todaysDate = new Date().toJSON().slice(0, 10);
     let formatedDate = todaysDate.split('-').join('/');
     theseTrips[3].date = formatedDate;
   }
@@ -22,14 +19,14 @@ describe('Agent', () => {
     
     agent = new Agent(trips.trips, destinations.destinations, travelers.travelers);
     pending = [{
-    id: 6,
-    userID: 2,
-    destinationID: 6,
-    travelers: 3,
-    date: "2023/06/29",
-    duration: 9,
-    status: "pending",
-    suggestedActivities: []
+      id: 6,
+      userID: 2,
+      destinationID: 6,
+      travelers: 3,
+      date: "2023/06/29",
+      duration: 9,
+      status: "pending",
+      suggestedActivities: []
     }]
   });
   it('should be a function', () => {
