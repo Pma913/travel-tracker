@@ -40,7 +40,11 @@ const pastTrips = document.getElementById("pastTripsBox"),
       pendingTripsBox = document.getElementById("pendingTripsDisplay"),
       agentPrice = document.getElementById("agentTotalIncome"),
       todaysTrips = document.getElementById("todaysTripsDisplay"),
-      clientDropDown = document.getElementById("clientDropDown");
+      clientDropDown = document.getElementById("clientDropDown"),
+      agentDisplay = document.getElementById("displaySections"),
+      agentClientDisplay = document.getElementById("clientDisplay"),
+      clientTrips = document.getElementById("clientTrips"),
+      tripTitle = document.getElementById("tripsTitle");
 
 /* Global Variables */
 let user,
@@ -122,10 +126,19 @@ const clearAgentDisplay = () => {
   pendingTripsBox.innerHTML = "";
 }
 
-const displayAgentPage = () => {
+const displayAgentPage = (tripData) => {
   setClientListener();
+  setTripsForToday();
+  setYearlyIncome();
+  setPendingTrips(tripData);
+}
+
+const setYearlyIncome = () => {
   agentPrice.innerText = Math.floor(agent.totalIncome);
-  agent.newTrips.forEach(trip => {
+}
+
+const setPendingTrips = (tripData) => {
+  tripData.forEach(trip => {
     const location = agent.locations.find(loc => loc.id === trip.destinationID)
     let user = travelers.find(pers => pers.id === trip.userID)
     pendingTripsBox.innerHTML += `<div class="pend-box">
@@ -141,11 +154,6 @@ const displayAgentPage = () => {
     </div>
     </div>`;
   })
-  if (agent.todaysTrips.length === 1) {
-    todaysTrips.innerHTML = `<p>There is currently 1 trip in progress today.</p>`;
-  } else {
-    todaysTrips.innerHTML = `<p>There are currently ${agent.todaysTrips.length} trips in progress today.</p>`;
-  }
 }
 
 const setClientDrop = () => {
@@ -154,8 +162,25 @@ const setClientDrop = () => {
   })
 }
 
+const setTripsForToday = () => {
+  if (agent.todaysTrips.length === 1) {
+    todaysTrips.innerHTML = `<p>There is currently 1 trip in progress today.</p>`;
+  } else {
+    todaysTrips.innerHTML = `<p>There are currently ${agent.todaysTrips.length} trips in progress today.</p>`;
+  }
+}
 
-
+const displayClientTrips = () => {
+  tripTitle.innerText = `${user.name}'s total trips`;
+  user.tripData.forEach(trip => {
+    clientTrips.innerHTML += `<div class="client-trips-box"><h3>Date: ${trip.date}</h3>
+    <h3>Duration: ${trip.duration}</h3>
+    <h3>Trip status: ${trip.status}</h3>
+    <h3>Number of travelers: ${trip.travelers}</h3>
+    <h3>Destination: ${trip.itinerary.destination}</h3></div>`
+  })
+}
+  
 /* Data manipulators */
 const checkDate = () => {
   if (dateInput.value < user.date.split('/').join('-')) {
@@ -164,12 +189,21 @@ const checkDate = () => {
   } 
 }
 
+const removeTripFromAgent = (id) => {
+  agent.newTrips.forEach((trip, index) => {
+    if (trip.id === id) {
+      agent.newTrips.splice(index, 1);
+    }
+  })
+}
+
 const approveTrip = (tripNum) => {
   let tripToApprove = agent.locateTrip(parseInt(tripNum))
   tripToApprove.status = "approved";
   tripToApprove.id = Date.now();
   deleteTrip(tripNum, agent.locateTrip(parseInt(tripNum)));
   postTrip(tripToApprove)
+  removeTripFromAgent(tripNum);
 }
 
 const deleteTrip = (tripNum) => {
@@ -179,6 +213,7 @@ const deleteTrip = (tripNum) => {
     console.log('delete message:', res.message)
     clearAgentDisplay();
     setAgentData();
+    removeTripFromAgent(tripNum);
   })
 }
 
@@ -189,8 +224,9 @@ const setAgentData = () => {
     agent.getTodaysTrips();
     agent.getTotalIncome(agent.trips);
     agent.getTripRequests(agent.trips);
-    displayAgentPage();
+    displayAgentPage(agent.newTrips);
     setButtonListener();
+    console.log(agent)
   })
 }
 
@@ -199,20 +235,6 @@ const clearInputs = () => {
   daysInput.value = "";
   travelersInput.value = "";
   destinationInput.value = "";
-}
-
-const setEventListeners = () => {
-  const destButtons = document.querySelectorAll("#chooseDestination");
-  
-  destButtons.forEach(node => {
-    node.addEventListener('click', () => {
-      destinationDisplay.classList.add('hidden');
-      formInputs.classList.remove('hidden');
-      destinationHeader.classList.add('hidden');
-      destinationInput.value = node.name;
-      locationSearch.value = "";
-    })
-  })
 }
 
 const setUserData = () => {
@@ -304,6 +326,20 @@ const getClientData = () => {
 }
 
 /* Event Listeners */
+const setEventListeners = () => {
+  const destButtons = document.querySelectorAll("#chooseDestination");
+  
+  destButtons.forEach(node => {
+    node.addEventListener('click', () => {
+      destinationDisplay.classList.add('hidden');
+      formInputs.classList.remove('hidden');
+      destinationHeader.classList.add('hidden');
+      destinationInput.value = node.name;
+      locationSearch.value = "";
+    })
+  })
+}
+
 const setClientListener = () => {
   const clients = document.querySelectorAll(".client-name")
 
@@ -312,7 +348,9 @@ const setClientListener = () => {
       agent.findUser(target.srcElement.innerText);
       user = new User(agent.client);
       getClientData();
-      console.log("selected client:" ,user)
+      agentDisplay.classList.add('hidden');
+      agentClientDisplay.classList.remove('hidden');
+      displayClientTrips();
     })
   });
 }
@@ -384,6 +422,8 @@ loginBtn.addEventListener('click', (event) => {
   } else if (password.value === "travel" && userName.value === "agency") {
     loginPage.classList.add('hidden');
     agentPage.classList.remove('hidden');
+    agentDisplay.classList.remove('hidden');
+    agentClientDisplay.classList.add('hidden')
     setAgentData();
   }
 });
