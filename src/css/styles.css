@@ -299,6 +299,7 @@ header {
 
 .dropdown-content p:hover {
   background-color: #ddd;
+  cursor: pointer;
 }
 
 .dropdown:hover .dropdown-content {
