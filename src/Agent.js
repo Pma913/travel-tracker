@@ -10,15 +10,15 @@ class Agent {
     this.client;
   }
 
-  getTripRequests() {
-    this.newTrips = this.trips.filter(trip => trip.status === 'pending')
+  getTripRequests(trips) {
+    this.newTrips = trips.filter(trip => trip.status === 'pending')
   }
 
-  getTotalIncome() {
+  getTotalIncome(trips) {
     let splitDate = this.date.split('/')
     splitDate.splice(0,1,splitDate[0] - 1)
     let lastYear = splitDate.join('/')
-    let pastYearTrips = this.trips.filter(trip => trip.date > lastYear)
+    let pastYearTrips = trips.filter(trip => trip.date > lastYear)
   
     let price = pastYearTrips.reduce((acc, trip) => {
       let location = this.locations.find(dest => dest.id === trip.destinationID);

@@ -43,12 +43,12 @@ describe('Agent', () => {
   });
 
   it('should have a method to set new trips', () => {
-    agent.getTripRequests();
+    agent.getTripRequests(theseTrips);
     expect(agent.newTrips).to.deep.equal(pending);
   });
 
   it('should have a method to set total income', () => {
-    agent.getTotalIncome();
+    agent.getTotalIncome(theseTrips);
     expect(agent.totalIncome).to.equal(2062);
   });
 
@@ -59,7 +59,7 @@ describe('Agent', () => {
   });
 
   it('should be able to locate a trip', () => {
-    agent.getTripRequests();
+    agent.getTripRequests(theseTrips);
     expect(agent.locateTrip(6)).to.equal(theseTrips[5]);
   });
 
