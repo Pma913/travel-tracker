@@ -77,14 +77,12 @@ describe('User', () => {
   });
 
   it('should hava a method to retrieve total cost', () => {
-    user.getTotalCost("2022");
-    expect(user.totalCost).to.equal(12782);
-    user2.getTotalCost("2022");
-    expect(user2.totalCost).to.equal(6270)
+    user2.getTotalCost();
+    expect(user2.totalCost).to.equal(5115)
   })
 
   it('should hava return error if no trips have been taken', () => {
-    expect(user.getTotalCost("2023", travelLocations)).to.equal("You have not taken any trips yet this year.");
+    expect(user.getTotalCost()).to.equal("You have not taken any trips yet this year.");
   });
 
   it('should hava a method to retrieve upcoming trips', () => {
