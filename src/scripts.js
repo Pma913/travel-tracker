@@ -6,7 +6,6 @@ import User from './User';
 import { fetchAllData } from './apiCalls';
 import { postTrip } from './apiCalls';
 import { fetchTrips } from './apiCalls';
-// import { fetchTravelers } from './apiCalls';
 import Agent from './Agent';
 import { updateTrip } from './apiCalls';
 
@@ -180,11 +179,16 @@ const removeTripFromAgent = (id) => {
 }
 
 const approveTrip = (tripNum) => {
-  let tripToApprove = agent.locateTrip(parseInt(tripNum))
+  let tripToApprove = agent.locateTrip(parseInt(tripNum));
   tripToApprove.status = "approved";
   tripToApprove.id = Date.now();
-  deleteTrip(tripNum, agent.locateTrip(parseInt(tripNum)));
+  updateTrip(tripNum, agent.locateTrip(parseInt(tripNum)));
   postTrip(tripToApprove)
+    .then(res => {
+      console.log('Trip successfully updated', res);
+    })
+  clearAgentDisplay();
+  setAgentData();
   removeTripFromAgent(tripNum);
 }
 
@@ -192,7 +196,9 @@ const deleteTrip = (tripNum) => {
   let trip = agent.locateTrip(parseInt(tripNum))
   updateTrip(tripNum, trip)
     .then(res => {
-      console.log('delete message:', res.message)
+      if (res.ok) {
+        console.log("Trip successfully deleted", res);
+      }
       clearAgentDisplay();
       setAgentData();
       removeTripFromAgent(tripNum);
