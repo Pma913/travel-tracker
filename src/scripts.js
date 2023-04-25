@@ -50,20 +50,20 @@ const pastTrips = document.getElementById("pastTripsBox"),
 /* Global Variables */
 let user,
   agent,
-  destinations,
-  travelers,
-  number,
-  locations; 
+  // destinations,
+  // travelers,
+  loginNumber,
+  locationsDisplay; 
 
 /* DOM manipulation */
 const resetDestinationDisplay = () => {
-  locations.forEach(location => {
+  locationsDisplay.forEach(location => {
     location.parentElement.classList.remove('hidden');
   })
 }
 
 const displayDestinations = () => {
-  destinations.forEach(dest => {
+  agent.locations.forEach(dest => {
     destinationDisplay.innerHTML += `<div class="img-box">
     <img src=${dest.image} alt=${dest.alt} class="img">
     <button class="select-destination btn" id="chooseDestination" name="${dest.destination}">${dest.destination}</button>
@@ -123,7 +123,7 @@ const setYearlyIncome = () => {
 const setPendingTrips = (tripData) => {
   tripData.forEach(trip => {
     const location = agent.locations.find(loc => loc.id === trip.destinationID)
-    let user = travelers.find(pers => pers.id === trip.userID)
+    let user = agent.users.find(pers => pers.id === trip.userID)
     pendingTripsBox.innerHTML += `<div class="pend-box">
     <div class="pend-labels"><h3>location:&nbsp;</h3><p> ${location.destination}</p></div>
     <div class="pend-labels"><h3>Client:&nbsp;</h3><p> ${user.name}</p></div>
@@ -140,7 +140,7 @@ const setPendingTrips = (tripData) => {
 }
 
 const setClientDrop = () => {
-  travelers.forEach(traveler => {
+  agent.users.forEach(traveler => {
     clientDropDown.innerHTML += `<p class="client-name">${traveler.name}</p>`
   })
 }
@@ -203,13 +203,16 @@ const deleteTrip = (tripNum) => {
 const setAgentData = () => {
   fetchAllData()
     .then(data => {
-      agent = new Agent(data[0].trips, data[1].destinations, travelers);
+      let trips = data[0].trips;
+      let destinations = data[1].destinations;
+      let travelers = data[2].travelers;
+      agent = new Agent(trips, destinations, travelers);
       agent.getTodaysTrips();
       agent.getTotalIncome(agent.trips);
       agent.getTripRequests(agent.trips);
+      setClientDrop();
       displayAgentPage(agent.newTrips);
       setButtonListener();
-      console.log(agent)
     })
 }
 
@@ -223,13 +226,13 @@ const clearInputs = () => {
 const setUserData = () => {
   fetchAllData()
     .then(data => {
-      user = new User(travelers.find(trav => trav.id === number));
+      user = new User(agent.users.find(trav => trav.id === loginNumber));
       user.findTrips(data[0].trips);
       user.addItineraries(data[1].destinations);
       user.getTotalCost();
       displayData();
       displayName();
-      destinations = data[1].destinations;
+      // destinations = data[1].destinations;
       displayDestinations();
     })
 };
@@ -249,15 +252,15 @@ const checkUsername = () => {
   })
 
   let word = letters.join('');
-  number = parseInt(numbers.join(''));
-  let travelerIds = travelers.map(trav => trav.id);
-  if (word === "traveler" && travelerIds.includes(number)) {
+  loginNumber = parseInt(numbers.join(''));
+  let travelerIds = agent.users.map(trav => trav.id);
+  if (word === "traveler" && travelerIds.includes(loginNumber)) {
     return true;
   }
 }
 
 const getPrice = () => {
-  let selectedDestination = destinations.find(dest => {
+  let selectedDestination = agent.locations.find(dest => {
     return dest.destination === destinationInput.value;
   });
 
@@ -272,7 +275,7 @@ const getPrice = () => {
 }
 
 const addData = () => {
-  let selectedDestination = destinations.find(dest => {
+  let selectedDestination = agent.locations.find(dest => {
     return dest.destination === destinationInput.value;
   });
 
@@ -294,7 +297,7 @@ const addData = () => {
       fetchTrips()
         .then(data => {
           user.findTrips(data.trips);
-          user.addItineraries(destinations);
+          user.addItineraries(agent.locations);
           user.getTotalCost();
           clearDisplay();
           displayData();
@@ -364,12 +367,16 @@ const setButtonListener = () => {
   })
 }
 
+// window.addEventListener('load', () => {
+//   fetchTravelers()
+//     .then(data => {
+//       travelers = data.travelers;
+//       setClientDrop();
+//     })
+// });
+
 window.addEventListener('load', () => {
-  fetchTravelers()
-    .then(data => {
-      travelers = data.travelers;
-      setClientDrop();
-    })
+  setAgentData();
 });
 
 bookButton.addEventListener('click', (event) => {
@@ -425,7 +432,7 @@ showFormBtn.addEventListener('click', () => {
   mainPage.classList.add('hidden');
   setEventListeners();
   dateInput.min = user.date.split('/').join('-');
-  locations = document.querySelectorAll(".select-destination");
+  locationsDisplay = document.querySelectorAll(".select-destination");
 })
 
 dateInput.addEventListener('input',  () => {
@@ -449,7 +456,7 @@ travelersInput.addEventListener('input',  () => {
 locationSearch.addEventListener('input', () => {
   const inputCtrl = locationSearch.value.toUpperCase();
   
-  locations.forEach(location => {
+  locationsDisplay.forEach(location => {
     const nameCtrl = location.name.toUpperCase();
 
     if (!nameCtrl.includes(inputCtrl)) {
