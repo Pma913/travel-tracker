@@ -215,10 +215,11 @@ header {
 
 .dest-name {
   position: absolute;
-  top: 15px;
+  top: 21px;
   left: 25px;
-  background-color: rgb(136 214 219);
-  /* background: white; */
+  background-color: rgb(255, 255, 255);
+  border-radius: 5px;
+  padding: 2px;
 }
 
 .pend-box {
