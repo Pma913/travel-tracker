@@ -54,7 +54,9 @@ class User {
   }
 
   getPastTrips() {
-    this.past = this.tripData.filter(trip => trip.date < this.date && trip.status === "approved");
+    this.past = this.tripData.filter(trip => {
+      return trip.date < this.date && trip.status === "approved";
+    });
   }
 
   getPendingTrips() {
@@ -66,7 +68,9 @@ class User {
   }
 
   getApprovedTrips() {
-    this.approved = this.tripData.filter(trip => trip.status === "approved" && trip.date >= this.date);
+    this.approved = this.tripData.filter(trip => {
+      return trip.status === "approved" && trip.date >= this.date;
+    });
 
     if (this.approved.length === 0) {
       return "You have no upcoming trips.";

@@ -3,11 +3,10 @@
 
 import './css/styles.css';
 import User from './User';
+import Agent from './Agent';
 import { fetchAllData } from './apiCalls';
 import { postTrip } from './apiCalls';
 import { fetchTrips } from './apiCalls';
-import { fetchTravelers } from './apiCalls';
-import Agent from './Agent';
 import { updateTrip } from './apiCalls';
 
 /* Query Selectors */
@@ -50,20 +49,18 @@ const pastTrips = document.getElementById("pastTripsBox"),
 /* Global Variables */
 let user,
   agent,
-  destinations,
-  travelers,
-  number,
-  locations; 
+  loginNumber,
+  locationsDisplay; 
 
 /* DOM manipulation */
 const resetDestinationDisplay = () => {
-  locations.forEach(location => {
+  locationsDisplay.forEach(location => {
     location.parentElement.classList.remove('hidden');
   })
 }
 
 const displayDestinations = () => {
-  destinations.forEach(dest => {
+  agent.locations.forEach(dest => {
     destinationDisplay.innerHTML += `<div class="img-box">
     <img src=${dest.image} alt=${dest.alt} class="img">
     <button class="select-destination btn" id="chooseDestination" name="${dest.destination}">${dest.destination}</button>
@@ -106,6 +103,7 @@ const clearDisplay = () => {
 }
 
 const clearAgentDisplay = () => {
+  clientDropDown.innerHTML = "";
   pendingTripsBox.innerHTML = "";
 }
 
@@ -123,7 +121,7 @@ const setYearlyIncome = () => {
 const setPendingTrips = (tripData) => {
   tripData.forEach(trip => {
     const location = agent.locations.find(loc => loc.id === trip.destinationID)
-    let user = travelers.find(pers => pers.id === trip.userID)
+    let user = agent.users.find(pers => pers.id === trip.userID)
     pendingTripsBox.innerHTML += `<div class="pend-box">
     <div class="pend-labels"><h3>location:&nbsp;</h3><p> ${location.destination}</p></div>
     <div class="pend-labels"><h3>Client:&nbsp;</h3><p> ${user.name}</p></div>
@@ -140,7 +138,7 @@ const setPendingTrips = (tripData) => {
 }
 
 const setClientDrop = () => {
-  travelers.forEach(traveler => {
+  agent.users.forEach(traveler => {
     clientDropDown.innerHTML += `<p class="client-name">${traveler.name}</p>`
   })
 }
@@ -181,19 +179,24 @@ const removeTripFromAgent = (id) => {
 }
 
 const approveTrip = (tripNum) => {
-  let tripToApprove = agent.locateTrip(parseInt(tripNum))
+  let tripToApprove = agent.locateTrip(parseInt(tripNum));
   tripToApprove.status = "approved";
   tripToApprove.id = Date.now();
-  deleteTrip(tripNum, agent.locateTrip(parseInt(tripNum)));
+  updateTrip(tripNum, agent.locateTrip(parseInt(tripNum)));
   postTrip(tripToApprove)
-  removeTripFromAgent(tripNum);
+    .then(res => {
+      console.log(res.statusText);
+      clearAgentDisplay();
+      setAgentData();
+      removeTripFromAgent(tripNum);
+    })
 }
 
 const deleteTrip = (tripNum) => {
   let trip = agent.locateTrip(parseInt(tripNum))
   updateTrip(tripNum, trip)
     .then(res => {
-      console.log('delete message:', res.message)
+      console.log(res.message)
       clearAgentDisplay();
       setAgentData();
       removeTripFromAgent(tripNum);
@@ -203,13 +206,17 @@ const deleteTrip = (tripNum) => {
 const setAgentData = () => {
   fetchAllData()
     .then(data => {
-      agent = new Agent(data[0].trips, data[1].destinations, travelers);
+      let trips = data[0].trips;
+      let destinations = data[1].destinations;
+      let travelers = data[2].travelers;
+      agent = new Agent(trips, destinations, travelers);
       agent.getTodaysTrips();
       agent.getTotalIncome(agent.trips);
       agent.getTripRequests(agent.trips);
+      clearAgentDisplay();
+      setClientDrop();
       displayAgentPage(agent.newTrips);
       setButtonListener();
-      console.log(agent)
     })
 }
 
@@ -221,18 +228,14 @@ const clearInputs = () => {
 }
 
 const setUserData = () => {
-  fetchAllData()
-    .then(data => {
-      user = new User(travelers.find(trav => trav.id === number));
-      user.findTrips(data[0].trips);
-      user.addItineraries(data[1].destinations);
-      user.getTotalCost();
-      displayData();
-      displayName();
-      destinations = data[1].destinations;
-      displayDestinations();
-    })
-};
+  user = new User(agent.users.find(trav => trav.id === loginNumber));
+  user.findTrips(agent.trips);
+  user.addItineraries(agent.locations);
+  user.getTotalCost();
+  displayData();
+  displayName();
+  displayDestinations();
+}
 
 const checkUsername = () => {
   let login = userName.value;
@@ -249,15 +252,15 @@ const checkUsername = () => {
   })
 
   let word = letters.join('');
-  number = parseInt(numbers.join(''));
-  let travelerIds = travelers.map(trav => trav.id);
-  if (word === "traveler" && travelerIds.includes(number)) {
+  loginNumber = parseInt(numbers.join(''));
+  let travelerIds = agent.users.map(trav => trav.id);
+  if (word === "traveler" && travelerIds.includes(loginNumber)) {
     return true;
   }
 }
 
 const getPrice = () => {
-  let selectedDestination = destinations.find(dest => {
+  let selectedDestination = agent.locations.find(dest => {
     return dest.destination === destinationInput.value;
   });
 
@@ -272,7 +275,7 @@ const getPrice = () => {
 }
 
 const addData = () => {
-  let selectedDestination = destinations.find(dest => {
+  let selectedDestination = agent.locations.find(dest => {
     return dest.destination === destinationInput.value;
   });
 
@@ -294,7 +297,7 @@ const addData = () => {
       fetchTrips()
         .then(data => {
           user.findTrips(data.trips);
-          user.addItineraries(destinations);
+          user.addItineraries(agent.locations);
           user.getTotalCost();
           clearDisplay();
           displayData();
@@ -365,11 +368,7 @@ const setButtonListener = () => {
 }
 
 window.addEventListener('load', () => {
-  fetchTravelers()
-    .then(data => {
-      travelers = data.travelers;
-      setClientDrop();
-    })
+  setAgentData();
 });
 
 bookButton.addEventListener('click', (event) => {
@@ -425,7 +424,7 @@ showFormBtn.addEventListener('click', () => {
   mainPage.classList.add('hidden');
   setEventListeners();
   dateInput.min = user.date.split('/').join('-');
-  locations = document.querySelectorAll(".select-destination");
+  locationsDisplay = document.querySelectorAll(".select-destination");
 })
 
 dateInput.addEventListener('input',  () => {
@@ -449,7 +448,7 @@ travelersInput.addEventListener('input',  () => {
 locationSearch.addEventListener('input', () => {
   const inputCtrl = locationSearch.value.toUpperCase();
   
-  locations.forEach(location => {
+  locationsDisplay.forEach(location => {
     const nameCtrl = location.name.toUpperCase();
 
     if (!nameCtrl.includes(inputCtrl)) {
