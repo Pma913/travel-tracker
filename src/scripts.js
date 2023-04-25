@@ -53,6 +53,12 @@ let user,
   locationsDisplay; 
 
 /* DOM manipulation */
+const setDestinationDrop = () => {
+  agent.locations.forEach(location => {
+    destinationInput.innerHTML += `<option value="${location.destination}">${location.destination}</option>`
+  })
+}
+
 const resetDestinationDisplay = () => {
   locationsDisplay.forEach(location => {
     location.parentElement.classList.remove('hidden');
@@ -217,6 +223,7 @@ const setAgentData = () => {
       setClientDrop();
       displayAgentPage(agent.newTrips);
       setButtonListener();
+      setDestinationDrop();
     })
 }
 
