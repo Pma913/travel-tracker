@@ -68,7 +68,7 @@ const updateTrip = (tripID, data) => {
       'Content-Type': 'application/json'
     }
   })
-  .then(res => {
+    .then(res => {
       if (!res.ok) {
         throw (res)
       }
