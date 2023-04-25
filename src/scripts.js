@@ -1,6 +1,3 @@
-// An example of how you tell webpack to use an image (also need to link to it in the index.html)
-// import './images/turing-logo.png'
-
 import './css/styles.css';
 import User from './User';
 import Agent from './Agent';
@@ -55,7 +52,8 @@ let user,
 /* DOM manipulation */
 const setDestinationDrop = () => {
   agent.locations.forEach(location => {
-    destinationInput.innerHTML += `<option value="${location.destination}">${location.destination}</option>`
+    destinationInput.innerHTML += `
+    <option value="${location.destination}">${location.destination}</option>`;
   })
 }
 
@@ -69,7 +67,8 @@ const displayDestinations = () => {
   agent.locations.forEach(dest => {
     destinationDisplay.innerHTML += `<div class="img-box">
     <img src=${dest.image} alt=${dest.alt} class="img">
-    <button class="select-destination btn" id="chooseDestination" name="${dest.destination}">${dest.destination}</button>
+    <button class="select-destination btn" id="chooseDestination" 
+     name="${dest.destination}">${dest.destination}</button>
     </div>`;
   })
 }
@@ -129,15 +128,29 @@ const setPendingTrips = (tripData) => {
     const location = agent.locations.find(loc => loc.id === trip.destinationID)
     let user = agent.users.find(pers => pers.id === trip.userID)
     pendingTripsBox.innerHTML += `<div class="pend-box">
-    <div class="pend-labels"><h3>location:&nbsp;</h3><p> ${location.destination}</p></div>
-    <div class="pend-labels"><h3>Client:&nbsp;</h3><p> ${user.name}</p></div>
-    <div class="pend-labels"><h3>Date:&nbsp;</h3><p> ${trip.date}</p></div>
-    <div class="pend-labels"><h3>Number of Travelers:&nbsp;</h3><p> ${trip.travelers}</p></div>
-    <div class="pend-labels"><h3>Duration:&nbsp;</h3><p> ${trip.duration} days</p></div>
-    <div class="pend-labels"><h3>trip id:&nbsp;</h3><p> ${trip.id}</p></div>
+    <div class="pend-labels">
+    <h3>location:&nbsp;</h3><p> ${location.destination}</p>
+    </div>
+    <div class="pend-labels">
+    <h3>Client:&nbsp;</h3><p> ${user.name}</p>
+    </div>
+    <div class="pend-labels">
+    <h3>Date:&nbsp;</h3><p> ${trip.date}</p>
+    </div>
+    <div class="pend-labels">
+    <h3>Number of Travelers:&nbsp;</h3><p> ${trip.travelers}</p>
+    </div>
+    <div class="pend-labels">
+    <h3>Duration:&nbsp;</h3><p> ${trip.duration} days</p>
+    </div>
+    <div class="pend-labels">
+    <h3>trip id:&nbsp;</h3><p> ${trip.id}</p>
+    </div>
     <div class="button-box">
-    <button name=${trip.id} class="approval-button" id="approveBtn">Approve</button>
-    <button name=${trip.id} class="delete-button" id="deleteBtn">Revoke</button>
+    <button name=${trip.id}
+     class="approval-button" id="approveBtn">Approve</button>
+    <button name=${trip.id}
+     class="delete-button" id="deleteBtn">Revoke</button>
     </div>
     </div>`;
   })
@@ -150,17 +163,21 @@ const setClientDrop = () => {
 }
 
 const setTripsForToday = () => {
-  if (agent.todaysTrips.length === 1) {
-    todaysTrips.innerHTML = `<p>There is currently 1 trip in progress today.</p>`;
+  let numOfDays = agent.todaysTrips.length;
+  if (numOfDays === 1) {
+    todaysTrips.innerHTML = `
+    <p>There is currently 1 trip in progress today.</p>`;
   } else {
-    todaysTrips.innerHTML = `<p>There are currently ${agent.todaysTrips.length} trips in progress today.</p>`;
+    todaysTrips.innerHTML = `
+    <p>There are currently ${numOfDays} trips in progress today.</p>`;
   }
 }
 
 const displayClientTrips = () => {
   tripTitle.innerText = `${user.name}'s total trips`;
   user.tripData.forEach(trip => {
-    clientTrips.innerHTML += `<div class="client-trips-box"><h3>Date: ${trip.date}</h3>
+    clientTrips.innerHTML += `
+    <div class="client-trips-box"><h3>Date: ${trip.date}</h3>
     <h3>Duration: ${trip.duration}</h3>
     <h3>Trip status: ${trip.status}</h3>
     <h3>Number of travelers: ${trip.travelers}</h3>
