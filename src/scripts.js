@@ -104,6 +104,7 @@ const clearDisplay = () => {
 }
 
 const clearAgentDisplay = () => {
+  clientDropDown.innerHTML = "";
   pendingTripsBox.innerHTML = "";
 }
 
@@ -208,10 +209,12 @@ const setAgentData = () => {
       agent.getTodaysTrips();
       agent.getTotalIncome(agent.trips);
       agent.getTripRequests(agent.trips);
-      clientDropDown.innerHTML = "";
+      clearAgentDisplay();
+      // clientDropDown.innerHTML = "";
       setClientDrop();
       displayAgentPage(agent.newTrips);
       setButtonListener();
+      console.log("agent.trips", agent.newTrips)
     })
 }
 
@@ -222,18 +225,28 @@ const clearInputs = () => {
   destinationInput.value = "";
 }
 
+// const setUserData = () => {
+//   fetchAllData()
+//     .then(data => {
+//       user = new User(agent.users.find(trav => trav.id === loginNumber));
+//       user.findTrips(data[0].trips);
+//       user.addItineraries(data[1].destinations);
+//       user.getTotalCost();
+//       displayData();
+//       displayName();
+//       displayDestinations();
+//     })
+// };
+
 const setUserData = () => {
-  fetchAllData()
-    .then(data => {
-      user = new User(agent.users.find(trav => trav.id === loginNumber));
-      user.findTrips(data[0].trips);
-      user.addItineraries(data[1].destinations);
-      user.getTotalCost();
-      displayData();
-      displayName();
-      displayDestinations();
-    })
-};
+  user = new User(agent.users.find(trav => trav.id === loginNumber));
+  user.findTrips(agent.trips);
+  user.addItineraries(agent.locations);
+  user.getTotalCost();
+  displayData();
+  displayName();
+  displayDestinations();
+}
 
 const checkUsername = () => {
   let login = userName.value;
