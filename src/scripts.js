@@ -6,7 +6,7 @@ import User from './User';
 import { fetchAllData } from './apiCalls';
 import { postTrip } from './apiCalls';
 import { fetchTrips } from './apiCalls';
-import { fetchTravelers } from './apiCalls';
+// import { fetchTravelers } from './apiCalls';
 import Agent from './Agent';
 import { updateTrip } from './apiCalls';
 
@@ -208,6 +208,7 @@ const setAgentData = () => {
       agent.getTodaysTrips();
       agent.getTotalIncome(agent.trips);
       agent.getTripRequests(agent.trips);
+      clientDropDown.innerHTML = "";
       setClientDrop();
       displayAgentPage(agent.newTrips);
       setButtonListener();
