@@ -17,7 +17,8 @@ const fetchAPI = (url) => {
 const fetchAllData = () => {
   return Promise.all([
     fetchAPI('http://localhost:3001/api/v1/trips'),
-    fetchAPI('http://localhost:3001/api/v1/destinations')
+    fetchAPI('http://localhost:3001/api/v1/destinations'),
+    fetchAPI('http://localhost:3001/api/v1/travelers')
   ]);
 };
 
