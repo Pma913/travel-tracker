@@ -72,41 +72,23 @@ const displayDestinations = () => {
 }
 
 const displayData = () => {
-  displayPast();
-  displayUpcoming();
-  displayPending();
+  user.getPastTrips();
+  user.getApprovedTrips();
+  user.getPendingTrips();
+  displayUserTrips(user.past, pastTrips);
+  displayUserTrips(user.approved, approvedTrips);
+  displayUserTrips(user.pending, pendingTrips);
   displayYearCost();
 }
 
-const displayPast = () => {
-  user.getPastTrips()
-  user.past.forEach(trip => {
-    pastTrips.innerHTML += `<div class="dash-img-box">
-      <h4 class="dest-name">${trip.itinerary.destination}</h4>
-      <img src="${trip.itinerary.image}" alt="${trip.itinerary.alt}" class="img">
-      </div>`;
-  });
-}
-
-const displayUpcoming = () => {
-  user.getApprovedTrips();
-  user.approved.forEach(trip => {
-    approvedTrips.innerHTML += `<div class="dash-img-box">
-    <h4 class="dest-name">${trip.itinerary.destination}</h4>
-    <img src="${trip.itinerary.image}" alt="${trip.itinerary.alt}" class="img">
-    </div>`;
-  });
-}
-
-const displayPending = () => {
-  user.getPendingTrips();
-  user.pending.forEach(trip => {
-    pendingTrips.innerHTML += `<div class="dash-img-box">
+const displayUserTrips = (data, location) => {
+  data.forEach(trip => {
+    location.innerHTML += `<div class="dash-img-box">
     <h4 class="dest-name">${trip.itinerary.destination}</h4>
     <img src="${trip.itinerary.image}" alt="${trip.itinerary.alt}" class="img">
     </div>`;
   })
-} 
+}
 
 const displayYearCost = () => {
   totalCost.innerText = `$${user.totalCost}`;
@@ -299,7 +281,7 @@ const addData = () => {
     userID: user.id, 
     destinationID: selectedDestination.id, 
     travelers: parseInt(travelersInput.value), 
-    date: user.date, 
+    date: dateInput.value.split('-').join('/'), 
     duration: parseInt(daysInput.value), 
     status: 'pending',
     suggestedActivities: []
