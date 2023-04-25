@@ -3,10 +3,10 @@
 
 import './css/styles.css';
 import User from './User';
+import Agent from './Agent';
 import { fetchAllData } from './apiCalls';
 import { postTrip } from './apiCalls';
 import { fetchTrips } from './apiCalls';
-import Agent from './Agent';
 import { updateTrip } from './apiCalls';
 
 /* Query Selectors */
@@ -185,20 +185,18 @@ const approveTrip = (tripNum) => {
   updateTrip(tripNum, agent.locateTrip(parseInt(tripNum)));
   postTrip(tripToApprove)
     .then(res => {
-      console.log('Trip successfully updated', res);
+      console.log(res.statusText);
+      clearAgentDisplay();
+      setAgentData();
+      removeTripFromAgent(tripNum);
     })
-  clearAgentDisplay();
-  setAgentData();
-  removeTripFromAgent(tripNum);
 }
 
 const deleteTrip = (tripNum) => {
   let trip = agent.locateTrip(parseInt(tripNum))
   updateTrip(tripNum, trip)
     .then(res => {
-      if (res.ok) {
-        console.log("Trip successfully deleted", res);
-      }
+      console.log(res.message)
       clearAgentDisplay();
       setAgentData();
       removeTripFromAgent(tripNum);
@@ -216,11 +214,9 @@ const setAgentData = () => {
       agent.getTotalIncome(agent.trips);
       agent.getTripRequests(agent.trips);
       clearAgentDisplay();
-      // clientDropDown.innerHTML = "";
       setClientDrop();
       displayAgentPage(agent.newTrips);
       setButtonListener();
-      console.log("agent.trips", agent.newTrips)
     })
 }
 
@@ -230,19 +226,6 @@ const clearInputs = () => {
   travelersInput.value = "";
   destinationInput.value = "";
 }
-
-// const setUserData = () => {
-//   fetchAllData()
-//     .then(data => {
-//       user = new User(agent.users.find(trav => trav.id === loginNumber));
-//       user.findTrips(data[0].trips);
-//       user.addItineraries(data[1].destinations);
-//       user.getTotalCost();
-//       displayData();
-//       displayName();
-//       displayDestinations();
-//     })
-// };
 
 const setUserData = () => {
   user = new User(agent.users.find(trav => trav.id === loginNumber));
