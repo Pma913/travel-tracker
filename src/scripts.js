@@ -18,7 +18,8 @@ const pastTrips = document.getElementById("pastTripsBox"),
       destinationInput = document.getElementById("destination"),
       bookButton = document.getElementById("userInputBtn"),
       tripPrice = document.getElementById("newTripPrice"),
-      inputs = document.querySelectorAll(".data-input");
+      inputs = document.querySelectorAll(".data-input"),
+      locationDrop = document.getElementById("destination");
 
 /* Global Variables */
 let user,
@@ -63,6 +64,12 @@ const clearDisplay = () => {
   totalCost.innerText = ``;
 }
 
+const initiateDropDown = () => {
+  destinations.forEach(location => {
+    locationDrop.innerHTML += `<option value="${location.destination}">${location.destination}</option>`
+  })
+}
+
 /* Data manipulators */
 const getPrice = () => {
   let selectedDestination = destinations.find(dest => {
@@ -95,7 +102,7 @@ const addData = () => {
   });
 
   let tripData = {
-    id: tripId, 
+    id: Date.now(), 
     userID: user.id, 
     destinationID: selectedDestination.id, 
     travelers: parseInt(travelersInput.value), 
@@ -104,6 +111,8 @@ const addData = () => {
     status: 'pending',
     suggestedActivities: []
   }
+
+  console.log(tripData)
 
   postTrip(tripData)
   .then(data => {
@@ -134,6 +143,7 @@ window.addEventListener('load', () => {
     displayData();
     tripId = data[1].trips.length + 1;
     destinations = data[2].destinations;
+    initiateDropDown();
   })
 });
 
