@@ -50,8 +50,6 @@ const pastTrips = document.getElementById("pastTripsBox"),
 /* Global Variables */
 let user,
   agent,
-  // destinations,
-  // travelers,
   loginNumber,
   locationsDisplay; 
 
@@ -232,7 +230,6 @@ const setUserData = () => {
       user.getTotalCost();
       displayData();
       displayName();
-      // destinations = data[1].destinations;
       displayDestinations();
     })
 };
@@ -366,14 +363,6 @@ const setButtonListener = () => {
     })
   })
 }
-
-// window.addEventListener('load', () => {
-//   fetchTravelers()
-//     .then(data => {
-//       travelers = data.travelers;
-//       setClientDrop();
-//     })
-// });
 
 window.addEventListener('load', () => {
   setAgentData();
