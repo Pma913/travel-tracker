@@ -22,22 +22,6 @@ const fetchAllData = () => {
   ]);
 };
 
-const fetchTravelers = () => {
-  return fetch('http://localhost:3001/api/v1/travelers')
-    .then(res => {
-      if (!res.ok) {
-        throw (res)
-      }
-      return res.json()
-    })
-    .catch(err => {
-      console.log(err.statusText)
-      if (err.status > 400 && err.status < 500) {
-        alert("Server is missing!")
-      }
-    })
-};
-
 const postTrip = (data) => {
   return fetch('http://localhost:3001/api/v1/trips', {
     method: 'POST',
@@ -50,7 +34,7 @@ const postTrip = (data) => {
       if (!res.ok) {
         throw (res)
       }
-      return res.json()
+      return res
     })
     .catch(err => {
       console.log(err.statusText)
@@ -84,10 +68,21 @@ const updateTrip = (tripID, data) => {
       'Content-Type': 'application/json'
     }
   })
+  .then(res => {
+      if (!res.ok) {
+        throw (res)
+      }
+      return res.json()
+    })
+    .catch(err => {
+      console.log(err.statusText)
+      if (err.status > 400 && err.status < 500) {
+        alert("Server is missing!")
+      }
+    })
 }
 
 export { fetchAllData };
 export { postTrip };
 export { fetchTrips };
-export { fetchTravelers };
 export { updateTrip };
