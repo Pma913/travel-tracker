@@ -3,7 +3,7 @@
 Travel tracker is a project that displays my knowledge of using fetch api to make GET, POST and DELETE requests. It utiizes three seperate URL endpoints of which the program will use to access, manipulate and update data. The program utilizes class to class interaction, Test Driven Development and webpack to allow communication across files in repo.
 
 ## Travel Tracker at a glance
-(gif here please)
+![giph of project](https://media.giphy.com/media/Kc1LRuWTQ46oYQLNvU/giphy.gif)
 
 ## Technologies used
 - javaScript
